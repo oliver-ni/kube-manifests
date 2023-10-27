@@ -5,6 +5,7 @@ metadata:
   namespace: bmt
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 50M
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: nginx
   rules:
@@ -54,3 +55,7 @@ spec:
                 name: ag-walrus
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - ag.poketwo.io
+      secretName: ag-ingress-tls
