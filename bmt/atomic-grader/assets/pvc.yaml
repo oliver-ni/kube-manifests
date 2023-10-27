@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ag-assets
+  namespace: bmt
+spec:
+  storageClassName: rook-cephfs-retain
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 64Gi

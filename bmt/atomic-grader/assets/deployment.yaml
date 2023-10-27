@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ag-assets
+  namespace: bmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ag-assets
+  template:
+    metadata:
+      labels:
+        app: ag-assets
+    spec:
+      containers:
+        - name: static
+          image: nginx:1.23.4-alpine-slim
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "4Gi"
+              cpu: "500m"
+            requests:
+              memory: "1Gi"
+              cpu: "50m"
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: ag-assets
+      volumes:
+        - name: ag-assets
+          persistentVolumeClaim:
+            claimName: ag-assets

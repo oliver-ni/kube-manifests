@@ -1,0 +1,12 @@
+vcluster:
+  image: rancher/k3s:v1.27.2-k3s1
+
+service:
+  type: LoadBalancer
+  loadBalancerIP: 204.16.243.206
+
+sync:
+  nodes:
+    enabled: true
+    enableScheduler: true
+    syncAllNodes: true

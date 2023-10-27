@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ag-walrus
+  namespace: bmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ag-walrus
+  template:
+    metadata:
+      labels:
+        app: ag-walrus
+    spec:
+      containers:
+        - name: walrus
+          image: ghcr.io/oliver-ni/ag-walrus:latest
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "4Gi"
+              cpu: "500m"
+            requests:
+              memory: "1Gi"
+              cpu: "50m"

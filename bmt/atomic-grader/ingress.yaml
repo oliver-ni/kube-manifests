@@ -1,0 +1,56 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ag-ingress
+  namespace: bmt
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 50M
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ag.poketwo.io
+      http:
+        paths:
+          - path: /graphql
+            pathType: Prefix
+            backend: &otter
+              service:
+                name: ag-otter
+                port:
+                  number: 8000
+
+          - path: /auth
+            pathType: Prefix
+            backend: *otter
+
+          - path: /api/exam
+            pathType: Prefix
+            backend: *otter
+
+          - path: /admin
+            pathType: Prefix
+            backend: *otter
+
+          - path: /silk
+            pathType: Prefix
+            backend: *otter
+
+          - path: /media
+            pathType: Prefix
+            backend: &assets
+              service:
+                name: ag-assets
+                port:
+                  number: 80
+
+          - path: /static
+            pathType: Prefix
+            backend: *assets
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ag-walrus
+                port:
+                  number: 80

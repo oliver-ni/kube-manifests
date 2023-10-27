@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: vcluster-dev
+
+helmCharts:
+  - releaseName: vcluster-dev
+    namespace: vcluster-dev
+    name: vcluster
+    version: 0.15.2
+    repo: https://charts.loft.sh
+    valuesFile: values.yaml
