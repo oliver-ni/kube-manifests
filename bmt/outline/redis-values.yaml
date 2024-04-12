@@ -1,0 +1,11 @@
+architecture: standalone
+usePassword: true
+
+auth:
+  existingSecret: outline-redis
+  existingSecretPasswordKey: password
+
+master:
+  persistence:
+    enabled: true
+    size: 8Gi
