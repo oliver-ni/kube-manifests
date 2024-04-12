@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: swire-server
+  namespace: bmt
+spec:
+  clusterIP: None
+  selector:
+    app: swire-server
+  ports:
+    - port: 80
+      targetPort: 3001
