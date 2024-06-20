@@ -25,3 +25,6 @@ spec:
             requests:
               memory: "1Gi"
               cpu: "50m"
+          env:
+            - name: GRAPHQL_URL
+              value: http://ag-otter:8000/graphql
