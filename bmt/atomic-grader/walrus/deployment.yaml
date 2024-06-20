@@ -17,7 +17,7 @@ spec:
         - name: walrus
           image: ghcr.io/oliver-ni/ag-walrus:latest
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           resources:
             limits:
               memory: "4Gi"
