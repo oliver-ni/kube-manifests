@@ -1,0 +1,81 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+      - name: Setup Nix build cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+      - name: Check Nix flake inputs
+        uses: DeterminateSystems/flake-checker-action@v7
+
+      - name: Build Kubernetes cluster
+        run: nix build .#kubernetes
+
+      - name: Upload cluster artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cluster
+          path: result/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout cluster branch
+        uses: actions/checkout@v4
+        with:
+          ref: cluster
+
+      - name: Remove old files
+        run: git rm -r .
+
+      - name: Download cluster artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cluster
+
+      - name: Create commit message
+        id: commit-msg
+        uses: actions/github-script@v7
+        env:
+          COMMITS: ${{ toJSON(github.event.commits) }}
+        with:
+          result-encoding: string
+          script: |
+            const commits = JSON.parse(process.env.COMMITS);
+            const lines = [];
+            for (const commit of commits) {
+              lines.push(`${commit.id.substring(0, 7)} ${commit.message.split("\n")[0]}`);
+            }
+            if (lines.length == 1) {
+              return `[rebuild] ${lines[0]}`;
+            }
+            const body = lines.reverse().map(x => `- ${x}`).join('\n\n');
+            return `[rebuild] ${lines.length} commits\n\n${body}`;
+
+      - name: Commit and push
+        env:
+          COMMIT_MSG: ${{ steps.commit-msg.outputs.result }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "$COMMIT_MSG" --allow-empty
+          git push
