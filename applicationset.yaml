@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: personal
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      directories:
+      - path: '*'
+      repoURL: https://github.com/oliver-ni/kube-manifests.git
+      revision: cluster
+  template:
+    metadata:
+      name: personal-{{path.basename}}
+      namespace: argocd
+    spec:
+      destination:
+        namespace: '{{path.basename}}'
+        server: https://kubernetes.default.svc
+      project: default
+      source:
+        path: '{{path}}'
+        repoURL: https://github.com/personal/kube-manifests.git
+        targetRevision: cluster
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+  syncPolicy:
+    applicationsSync: create-update
