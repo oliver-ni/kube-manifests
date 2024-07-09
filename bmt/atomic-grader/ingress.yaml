@@ -54,7 +54,8 @@ spec:
               service:
                 name: ag-walrus
                 port:
-                  number: 80
+                  number: 3000
+
   tls:
     - hosts:
         - ag.poketwo.io

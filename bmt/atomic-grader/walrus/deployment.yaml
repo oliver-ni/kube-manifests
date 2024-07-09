@@ -17,7 +17,7 @@ spec:
         - name: walrus
           image: ghcr.io/oliver-ni/ag-walrus:latest
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           resources:
             limits:
               memory: "4Gi"
@@ -25,3 +25,6 @@ spec:
             requests:
               memory: "1Gi"
               cpu: "50m"
+          env:
+            - name: GRAPHQL_URL
+              value: http://ag-otter:8000/graphql
