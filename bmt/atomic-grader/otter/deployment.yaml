@@ -25,12 +25,12 @@ spec:
             requests:
               memory: "1Gi"
               cpu: "50m"
-          envFrom:
+          envFrom: &envFrom
             - secretRef:
                 name: ag-otter
             - configMapRef:
                 name: ag-otter
-          env:
+          env: &env
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
@@ -56,7 +56,31 @@ spec:
                   key: password
             - name: RABBITMQ_BROKER_URL
               value: amqp://$(RMQ_USER):$(RMQ_PASS)@ag-rabbitmq:5672/
+          volumeMounts:
+            - mountPath: /assets
+              name: ag-assets
 
+      initContainers:
+        - name: migrate
+          image: ghcr.io/atomicgrader/otter:latest
+          command:
+            - python
+          args:
+            - manage.py
+            - migrate
+          envFrom: *envFrom
+          env: *env
+
+        - name: collectstatic
+          image: ghcr.io/atomicgrader/otter:latest
+          command:
+            - python
+          args:
+            - manage.py
+            - collectstatic
+            - --noinput
+          envFrom: *envFrom
+          env: *env
           volumeMounts:
             - mountPath: /assets
               name: ag-assets
