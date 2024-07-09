@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: walrus
-          image: ghcr.io/oliver-ni/ag-walrus:latest
+          image: ghcr.io/atomicgrader/walrus:latest
           ports:
             - containerPort: 3000
           resources:

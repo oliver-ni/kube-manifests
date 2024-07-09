@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: otter
-          image: ghcr.io/oliver-ni/ag-otter:latest
+          image: ghcr.io/atomicgrader/otter:latest
           ports:
             - containerPort: 8000
           resources:
