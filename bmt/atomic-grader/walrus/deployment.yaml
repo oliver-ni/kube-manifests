@@ -27,4 +27,4 @@ spec:
               cpu: "50m"
           env:
             - name: GRAPHQL_URL
-              value: http://ag-otter:8000/graphql
+              value: https://ag.poketwo.io/graphql
