@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swire-client
+  namespace: bmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swire-client
+  template:
+    metadata:
+      labels:
+        app: swire-client
+    spec:
+      containers:
+      - image: ghcr.io/berkeleymt/swire-client:latest
+        name: swire-client
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 16Mi
+      imagePullSecrets:
+      - name: ghcr-auth

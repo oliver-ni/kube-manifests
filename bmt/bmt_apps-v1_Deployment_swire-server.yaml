@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swire-server
+  namespace: bmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swire-server
+  template:
+    metadata:
+      labels:
+        app: swire-server
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: swire
+        image: ghcr.io/berkeleymt/swire-server:latest
+        name: swire-server
+        ports:
+        - containerPort: 3001
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 64Mi
+        volumeMounts:
+        - mountPath: /app/server/data
+          name: swire-data
+      imagePullSecrets:
+      - name: ghcr-auth
+      volumes:
+      - name: swire-data
+        persistentVolumeClaim:
+          claimName: swire-data
