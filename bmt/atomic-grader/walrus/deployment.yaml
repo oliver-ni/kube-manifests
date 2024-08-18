@@ -28,3 +28,5 @@ spec:
           env:
             - name: GRAPHQL_URL
               value: https://ag.poketwo.io/graphql
+      imagePullSecrets:
+        - name: ghcr-auth

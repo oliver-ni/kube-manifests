@@ -76,3 +76,6 @@ spec:
         - name: ag-assets
           persistentVolumeClaim:
             claimName: ag-assets
+
+      imagePullSecrets:
+        - name: ghcr-auth
