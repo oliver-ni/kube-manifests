@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: ag.poketwo.io
+    - host: ag-old-will-be-deleted-soon.poketwo.io
       http:
         paths:
           - path: /graphql
@@ -58,5 +58,5 @@ spec:
 
   tls:
     - hosts:
-        - ag.poketwo.io
+        - ag-old-will-be-deleted-soon.poketwo.io
       secretName: ag-ingress-tls
