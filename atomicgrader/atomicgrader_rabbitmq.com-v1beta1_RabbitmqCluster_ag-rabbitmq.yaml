@@ -1,0 +1,41 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: ag-rabbitmq
+  namespace: atomicgrader
+spec:
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers:
+            - env:
+              - name: RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS
+                value: -kernel inetrc '/ipv6/erl_inetrc' -proto_dist inet6_tcp
+              - name: RABBITMQ_CTL_ERL_ARGS
+                value: -proto_dist inet6_tcp
+              name: rabbitmq
+              volumeMounts:
+              - mountPath: /ipv6
+                name: ipv6-cfg
+            initContainers:
+            - command:
+              - sh
+              - -c
+              - echo "{inet6, true}." > /ipv6/erl_inetrc
+              image: docker.io/busybox:1.33.1
+              imagePullPolicy: IfNotPresent
+              name: ipv6-init
+              volumeMounts:
+              - mountPath: /ipv6
+                name: ipv6-cfg
+            volumes:
+            - emptyDir: {}
+              name: ipv6-cfg
+  replicas: 1
+  resources:
+    limits:
+      memory: 8Gi
+    requests:
+      memory: 1Gi

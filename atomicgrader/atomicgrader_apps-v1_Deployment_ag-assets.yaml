@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ag-assets
+  namespace: atomicgrader
+spec:
+  selector:
+    matchLabels:
+      app: ag-assets
+  template:
+    metadata:
+      labels:
+        app: ag-assets
+    spec:
+      containers:
+      - image: nginx:1.23.4-alpine-slim
+        name: ag-assets
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: ag-assets
+      volumes:
+      - name: ag-assets
+        persistentVolumeClaim:
+          claimName: ag-assets

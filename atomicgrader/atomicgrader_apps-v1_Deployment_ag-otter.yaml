@@ -1,0 +1,150 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ag-otter
+  namespace: atomicgrader
+spec:
+  selector:
+    matchLabels:
+      app: ag-otter
+  template:
+    metadata:
+      labels:
+        app: ag-otter
+    spec:
+      containers:
+      - env:
+        - name: C_FORCE_ROOT
+          value: 'true'
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ag-postgres-app
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: ag-postgres-app
+        - name: DJANGO_DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@ag-postgres-rw:5432/atomicgrader
+        - name: RMQ_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ag-rabbitmq-default-user
+        - name: RMQ_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: ag-rabbitmq-default-user
+        - name: RABBITMQ_BROKER_URL
+          value: amqp://$(RMQ_USER):$(RMQ_PASS)@ag-rabbitmq:5672/
+        envFrom:
+        - secretRef:
+            name: ag-otter
+        - configMapRef:
+            name: ag-otter
+        image: ghcr.io/atomicgrader/otter:latest
+        name: otter
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 50m
+            memory: 1Gi
+        volumeMounts:
+        - mountPath: /assets
+          name: ag-assets
+      imagePullSecrets:
+      - name: ghcr-auth
+      initContainers:
+      - command:
+        - python
+        - manage.py
+        - migrate
+        env:
+        - name: C_FORCE_ROOT
+          value: 'true'
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ag-postgres-app
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: ag-postgres-app
+        - name: DJANGO_DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@ag-postgres-rw:5432/atomicgrader
+        - name: RMQ_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ag-rabbitmq-default-user
+        - name: RMQ_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: ag-rabbitmq-default-user
+        - name: RABBITMQ_BROKER_URL
+          value: amqp://$(RMQ_USER):$(RMQ_PASS)@ag-rabbitmq:5672/
+        envFrom:
+        - secretRef:
+            name: ag-otter
+        - configMapRef:
+            name: ag-otter
+        image: ghcr.io/atomicgrader/otter:latest
+        name: migrate
+        volumeMounts:
+        - mountPath: /assets
+          name: ag-assets
+      - command:
+        - python
+        - manage.py
+        - collectstatic
+        - --no-input
+        env:
+        - name: C_FORCE_ROOT
+          value: 'true'
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ag-postgres-app
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: ag-postgres-app
+        - name: DJANGO_DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@ag-postgres-rw:5432/atomicgrader
+        - name: RMQ_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ag-rabbitmq-default-user
+        - name: RMQ_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: ag-rabbitmq-default-user
+        - name: RABBITMQ_BROKER_URL
+          value: amqp://$(RMQ_USER):$(RMQ_PASS)@ag-rabbitmq:5672/
+        envFrom:
+        - secretRef:
+            name: ag-otter
+        - configMapRef:
+            name: ag-otter
+        image: ghcr.io/atomicgrader/otter:latest
+        name: collectstatic
+        volumeMounts:
+        - mountPath: /assets
+          name: ag-assets
+      volumes:
+      - name: ag-assets
+        persistentVolumeClaim:
+          claimName: ag-assets

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ag-walrus
+  namespace: atomicgrader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ag-walrus
+  template:
+    metadata:
+      labels:
+        app: ag-walrus
+    spec:
+      containers:
+      - env:
+        - name: GRAPHQL_URL
+          value: https://ag.poketwo.io/graphql
+        image: ghcr.io/atomicgrader/walrus:latest
+        name: walrus
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: 500m
+            memory: 4Gi
+          requests:
+            cpu: 50m
+            memory: 1Gi
+      imagePullSecrets:
+      - name: ghcr-auth

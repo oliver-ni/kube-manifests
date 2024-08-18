@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  DIFFICULTY: normal
+  EULA: 'TRUE'
+  MAX_PLAYERS: '50'
+  MEMORY: 6G
+  MODE: survival
+  MOTD: MUSA
+  OPS: Organically,unknownh_
+  SPAWN_PROTECTION: '0'
+  TYPE: PAPER
+  VERSION: '1.21'
+kind: ConfigMap
+metadata:
+  name: minecraft-server
+  namespace: musa

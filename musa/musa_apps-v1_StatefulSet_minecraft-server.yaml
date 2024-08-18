@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minecraft-server
+  namespace: musa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-server
+  serviceName: minecraft-server
+  template:
+    metadata:
+      labels:
+        app: minecraft-server
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: minecraft-server
+        image: itzg/minecraft-server:latest
+        livenessProbe:
+          exec:
+            command:
+            - mcstatus
+            - 127.0.0.1
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        name: minecraft-server
+        ports:
+        - containerPort: 25565
+          name: minecraft
+        readinessProbe:
+          exec:
+            command:
+            - mcstatus
+            - 127.0.0.1
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            cpu: 100m
+            memory: 8Gi
+        volumeMounts:
+        - mountPath: /data
+          name: minecraft-data
+      volumes:
+      - name: minecraft-data
+        persistentVolumeClaim:
+          claimName: minecraft-data

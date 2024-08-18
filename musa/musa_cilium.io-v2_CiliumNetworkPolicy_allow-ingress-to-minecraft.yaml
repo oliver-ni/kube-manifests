@@ -1,0 +1,12 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-ingress-to-minecraft
+  namespace: musa
+spec:
+  endpointSelector:
+    matchLabels:
+      app: minecraft-server
+  ingress:
+  - fromEntities:
+    - all

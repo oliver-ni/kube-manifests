@@ -1,0 +1,73 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 50M
+  name: ag-ingress
+  namespace: atomicgrader
+spec:
+  rules:
+  - host: ag.poketwo.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: ag-otter
+            port:
+              number: 80
+        path: /graphql
+        pathType: Prefix
+      - backend:
+          service:
+            name: ag-otter
+            port:
+              number: 80
+        path: /auth
+        pathType: Prefix
+      - backend:
+          service:
+            name: ag-otter
+            port:
+              number: 80
+        path: /api/exam
+        pathType: Prefix
+      - backend:
+          service:
+            name: ag-otter
+            port:
+              number: 80
+        path: /admin
+        pathType: Prefix
+      - backend:
+          service:
+            name: ag-otter
+            port:
+              number: 80
+        path: /silk
+        pathType: Prefix
+      - backend:
+          service:
+            name: ag-assets
+            port:
+              number: 80
+        path: /media
+        pathType: Prefix
+      - backend:
+          service:
+            name: ag-assets
+            port:
+              number: 80
+        path: /static
+        pathType: Prefix
+      - backend:
+          service:
+            name: ag-walrus
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - ag.poketwo.io
+    secretName: ag-ingress-tls

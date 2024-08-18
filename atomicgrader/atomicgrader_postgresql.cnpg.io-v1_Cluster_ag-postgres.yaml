@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ag-postgres
+  namespace: atomicgrader
+spec:
+  bootstrap:
+    initdb:
+      database: atomicgrader
+  instances: 3
+  storage:
+    size: 8Gi
