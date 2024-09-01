@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  namespace: bmt-outline
+spec:
+  bootstrap:
+    initdb:
+      database: outline
+  instances: 3
+  storage:
+    size: 8Gi

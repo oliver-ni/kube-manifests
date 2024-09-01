@@ -1,0 +1,8 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: outline-bucket
+  namespace: bmt-outline
+spec:
+  generateBucketName: outline
+  storageClassName: rgw-nvme

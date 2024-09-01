@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outline
+  namespace: bmt-outline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outline
+  template:
+    metadata:
+      labels:
+        app: outline
+    spec:
+      containers:
+      - env:
+        - name: URL
+          value: https://docs.berkeley.mt
+        - name: PORT
+          value: '3000'
+        - name: REDIS_PASS
+          valueFrom:
+            secretKeyRef:
+              key: redis-password
+              name: redis
+        - name: REDIS_URL
+          value: redis://:$(REDIS_PASS)@redis-master:6379/?family=6
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: postgres-app
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: postgres-app
+        - name: DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@postgres-rw:5432/outline
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: AWS_ACCESS_KEY_ID
+              name: outline-bucket
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: AWS_SECRET_ACCESS_KEY
+              name: outline-bucket
+        - name: AWS_S3_UPLOAD_BUCKET_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: BUCKET_NAME
+              name: outline-bucket
+        - name: AWS_S3_UPLOAD_BUCKET_URL
+          value: https://rgw.hfym.co
+        - name: AWS_S3_ACL
+          value: private
+        - name: GOOGLE_CLIENT_ID
+          value: 799809453242-iesp4onlaje1hu5h97iq313h6f06mjuo.apps.googleusercontent.com
+        - name: SMTP_HOST
+          value: smtp.resend.com
+        - name: SMTP_PORT
+          value: '465'
+        - name: SMTP_USERNAME
+          value: resend
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: RESEND_API_KEY
+              name: outline
+        - name: SMTP_FROM_EMAIL
+          value: noreply@berkeley.mt
+        envFrom:
+        - secretRef:
+            name: outline
+        image: outlinewiki/outline:0.75.0
+        name: outline
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 100m
+            memory: 1Gi

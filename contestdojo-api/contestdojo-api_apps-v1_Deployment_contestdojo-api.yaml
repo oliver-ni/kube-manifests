@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contestdojo-api
+  namespace: contestdojo-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contestdojo-api
+  template:
+    metadata:
+      labels:
+        app: contestdojo-api
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: contestdojo-api
+        image: ghcr.io/contestdojo/api:main
+        imagePullPolicy: Always
+        name: contestdojo-api
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi

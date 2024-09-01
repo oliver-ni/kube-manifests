@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  DOMAIN: https://bitwarden.berkeley.mt
+  ROCKET_ADDRESS: '::'
+  SMTP_FROM: noreply@berkeley.mt
+  SMTP_HOST: smtp.resend.com
+  SMTP_PORT: '587'
+  SMTP_USERNAME: resend
+kind: ConfigMap
+metadata:
+  name: vaultwarden
+  namespace: bmt-vaultwarden

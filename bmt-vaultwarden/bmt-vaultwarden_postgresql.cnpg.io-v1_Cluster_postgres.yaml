@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  namespace: bmt-vaultwarden
+spec:
+  bootstrap:
+    initdb:
+      database: vaultwarden
+  instances: 3
+  storage:
+    size: 1Gi
