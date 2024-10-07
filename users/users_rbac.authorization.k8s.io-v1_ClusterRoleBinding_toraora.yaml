@@ -1,12 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: landrew
-  namespace: guts
+  name: toraora
+  namespace: users
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: admin
+  name: view
 subjects:
 - kind: ServiceAccount
-  name: landrew
+  name: toraora
+  namespace: users
