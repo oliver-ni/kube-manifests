@@ -31,6 +31,11 @@
       };
     };
 
+    v1.Secret.ghcr-auth = {
+      type = "kubernetes.io/dockerconfigjson";
+      stringData.".dockerconfigjson" = "";
+    };
+
     v1.Service.guts-scoreboard.spec = {
       selector.app = "guts-scoreboard";
       ports = [{
@@ -44,7 +49,7 @@
       SU_PASS = "";
     };
 
-    v1.PersistentVolumeClaim.scoreboard-guts-data.spec = {
+    v1.PersistentVolumeClaim.guts-scoreboard-data.spec = {
       accessModes = [ "ReadWriteOnce" ];
       resources.requests.storage = "16Gi";
     };

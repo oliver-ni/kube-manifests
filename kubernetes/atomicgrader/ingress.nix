@@ -4,7 +4,7 @@
   namespaces.atomicgrader.resources = {
     "networking.k8s.io/v1".Ingress.ag-ingress = {
       metadata.annotations = {
-        "nginx.ingress.kubernetes.io/proxy-body-size" = "50M";
+        "nginx.ingress.kubernetes.io/proxy-body-size" = "100M";
         "cert-manager.io/cluster-issuer" = "letsencrypt";
       };
       spec = {
