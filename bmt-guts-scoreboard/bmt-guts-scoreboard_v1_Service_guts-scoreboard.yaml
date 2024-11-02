@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: guts-scoreboard
+  namespace: bmt-guts-scoreboard
+spec:
+  ports:
+  - port: 80
+    targetPort: 4887
+  selector:
+    app: guts-scoreboard

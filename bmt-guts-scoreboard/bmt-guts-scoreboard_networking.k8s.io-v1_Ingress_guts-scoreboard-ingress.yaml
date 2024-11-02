@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: guts-scoreboard-ingress
+  namespace: bmt-guts-scoreboard
+spec:
+  rules:
+  - host: guts.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: guts-scoreboard
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - guts.berkeley.mt
+    secretName: guts-scoreboard-ingress-tls

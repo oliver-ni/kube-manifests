@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guts-scoreboard
+  namespace: bmt-guts-scoreboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guts-scoreboard
+  template:
+    metadata:
+      labels:
+        app: guts-scoreboard
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: guts-scoreboard
+        image: ghcr.io/berkeleymt/guts-scoreboard:latest
+        name: guts-scoreboard
+        ports:
+        - containerPort: 4887
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 200m
+            memory: 64Mi
+        volumeMounts:
+        - mountPath: /data
+          name: guts-scoreboard-data
+      imagePullSecrets:
+      - name: ghcr-auth
+      volumes:
+      - name: guts-scoreboard-data
+        persistentVolumeClaim:
+          claimName: guts-scoreboard-data
