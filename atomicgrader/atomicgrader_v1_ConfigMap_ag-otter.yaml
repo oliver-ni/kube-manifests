@@ -4,6 +4,7 @@ data:
   DJANGO_ADMIN_NAME: Oliver Ni
   DJANGO_ADMIN_URL: admin
   DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,ag.poketwo.io
+  DJANGO_CSRF_TRUSTED_ORIGINS: https://ag.poketwo.io
   DJANGO_DEBUG: 'False'
   DJANGO_DEFAULT_FROM_EMAIL: oliver.ni@gmail.com
   DJANGO_MEDIA_ROOT: /assets/media/
