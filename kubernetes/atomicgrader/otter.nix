@@ -40,6 +40,7 @@ in
     v1.Secret.ag-otter.stringData = {
       DJANGO_SECRET_KEY = "";
       DJANGO_JWT_SIGNING_KEY = "";
+      GEMINI_API_KEY = "";
     };
 
     "apps/v1".Deployment.ag-otter.spec = {
