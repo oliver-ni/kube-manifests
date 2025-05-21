@@ -1,0 +1,14 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Pooler
+metadata:
+  name: tph-pgbouncer
+  namespace: tph-2024-staging
+spec:
+  cluster:
+    name: tph-postgres
+  instances: 3
+  pgbouncer:
+    parameters:
+      default_pool_size: '2000'
+      max_client_conn: '2000'
+  type: rw

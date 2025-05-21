@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discord-bot
+  namespace: bmt-discord-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discord-bot
+  template:
+    metadata:
+      labels:
+        app: discord-bot
+    spec:
+      containers:
+      - env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: discord-bot-postgres-app
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: discord-bot-postgres-app
+        - name: DB_URI
+          value: postgres://$(DB_USER):$(DB_PASS)@discord-bot-postgres-rw:5432/bmt_discord_bot
+        envFrom:
+        - secretRef:
+            name: discord-bot
+        image: ghcr.io/berkeleymt/discord-bot:latest
+        name: discord-bot
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 20m
+            memory: 64Mi
+      imagePullSecrets:
+      - name: ghcr-auth
