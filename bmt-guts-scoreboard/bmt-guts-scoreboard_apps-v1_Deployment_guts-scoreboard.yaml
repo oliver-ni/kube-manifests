@@ -14,7 +14,20 @@ spec:
         app: guts-scoreboard
     spec:
       containers:
-      - envFrom:
+      - env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: guts-scoreboard-postgres-app
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: guts-scoreboard-postgres-app
+        - name: DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard
+        envFrom:
         - secretRef:
             name: guts-scoreboard
         image: ghcr.io/berkeleymt/guts-scoreboard:latest
@@ -27,12 +40,5 @@ spec:
           requests:
             cpu: 200m
             memory: 64Mi
-        volumeMounts:
-        - mountPath: /data
-          name: guts-scoreboard-data
       imagePullSecrets:
       - name: ghcr-auth
-      volumes:
-      - name: guts-scoreboard-data
-        persistentVolumeClaim:
-          claimName: guts-scoreboard-data

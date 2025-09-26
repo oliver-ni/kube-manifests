@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: guts-scoreboard-postgres
+  namespace: bmt-guts-scoreboard
+spec:
+  bootstrap:
+    initdb:
+      database: guts_scoreboard
+  instances: 3
+  storage:
+    size: 8Gi
