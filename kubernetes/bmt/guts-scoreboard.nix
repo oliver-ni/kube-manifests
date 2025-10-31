@@ -22,6 +22,7 @@
               { name = "DB_USER"; valueFrom.secretKeyRef = { name = "guts-scoreboard-postgres-app"; key = "username"; }; }
               { name = "DB_PASS"; valueFrom.secretKeyRef = { name = "guts-scoreboard-postgres-app"; key = "password"; }; }
               { name = "DATABASE_URL"; value = "postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard"; }
+              { name = "RUST_LOG"; value = "tower_http=trace"; }
             ];
             envFrom = [{ secretRef.name = "guts-scoreboard"; }];
             resources = {
