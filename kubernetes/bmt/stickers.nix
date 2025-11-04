@@ -11,6 +11,7 @@
           containers = [{
             name = "stickers";
             image = "ghcr.io/berkeleymt/stickers:latest";
+            ports = [{ containerPort = 8000; }];
             envFrom = [{ secretRef.name = "stickers"; }];
             resources = {
               limits = { memory = "512Mi"; };
@@ -22,6 +23,14 @@
       };
     };
 
+    v1.Service.stickers.spec = {
+      selector.app = "stickers";
+      ports = [{
+        port = 80;
+        targetPort = 8000;
+      }];
+    };
+
     v1.Secret.ghcr-auth = {
       type = "kubernetes.io/dockerconfigjson";
       stringData.".dockerconfigjson" = "";
@@ -31,6 +40,29 @@
       CONTESTDOJO_API_KEY = "";
       AUTH_USERNAME = "";
       AUTH_PASSWORD = "";
+    };
+
+    "networking.k8s.io/v1".Ingress.stickers-ingress = {
+      metadata.annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
+      spec = {
+        rules = [{
+          host = "stickers.berkeley.mt";
+          http = {
+            paths = [{
+              path = "/";
+              pathType = "Prefix";
+              backend.service = {
+                name = "stickers";
+                port.number = 80;
+              };
+            }];
+          };
+        }];
+        tls = [{
+          hosts = [ "stickers.berkeley.mt" ];
+          secretName = "stickers-ingress-tls";
+        }];
+      };
     };
   };
 }
