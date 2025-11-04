@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stickers
+  namespace: bmt-stickers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stickers
+  template:
+    metadata:
+      labels:
+        app: stickers
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: stickers
+        image: ghcr.io/berkeleymt/stickers:latest
+        name: stickers
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 20m
+            memory: 64Mi
+      imagePullSecrets:
+      - name: ghcr-auth
