@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: stickers-ingress
+  namespace: bmt-stickers
+spec:
+  rules:
+  - host: stickers.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: stickers
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - stickers.berkeley.mt
+    secretName: stickers-ingress-tls

@@ -19,6 +19,8 @@ spec:
             name: stickers
         image: ghcr.io/berkeleymt/stickers:latest
         name: stickers
+        ports:
+        - containerPort: 8000
         resources:
           limits:
             memory: 512Mi
