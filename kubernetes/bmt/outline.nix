@@ -33,7 +33,7 @@ in
   namespaces.bmt-outline = {
     helmReleases.redis = {
       chart = transpire.fetchFromHelm {
-        repo = "https://charts.bitnami.com/bitnami";
+        repo = "https://charts.bitnami.com/bitnamilegacy";
         name = "redis";
         version = "19.6.1";
         sha256 = "z7M/oHv2x9LVaMaPXk5KfYYqZs7m7+PmLxnKjL0Thxs=";
