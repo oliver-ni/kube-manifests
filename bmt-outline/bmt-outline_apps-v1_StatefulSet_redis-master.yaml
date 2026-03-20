@@ -25,7 +25,7 @@ spec:
         checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
         checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
         checksum/scripts: 560c33ff34d845009b51830c332aa05fa211444d1877d3526d3599be7543aaa5
-        checksum/secret: 5087355cd4085a248c468adc626b69a851c4fa6aa0b3a8881ce5bf3c6822d568
+        checksum/secret: b2c82d44673661d390392c1b212791fa2bf19a6d42323b784a01f2eb690aa6ab
         prometheus.io/port: '9121'
         prometheus.io/scrape: 'true'
       labels:
@@ -70,7 +70,7 @@ spec:
           value: 'no'
         - name: REDIS_PORT
           value: '6379'
-        image: docker.io/bitnami/redis:7.2.5-debian-12-r2
+        image: docker.io/bitnamilegacy/redis:7.2.5-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -154,7 +154,7 @@ spec:
             secretKeyRef:
               key: redis-password
               name: redis
-        image: docker.io/bitnami/redis-exporter:1.61.0-debian-12-r2
+        image: docker.io/bitnamilegacy/redis-exporter:1.61.0-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
