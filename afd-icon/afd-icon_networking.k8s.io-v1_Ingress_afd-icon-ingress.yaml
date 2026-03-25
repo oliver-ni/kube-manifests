@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: afd-icon-ingress
+  namespace: afd-icon
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: afdicon.poketwo.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: afd-icon
+            port:
+              number: 8000
+        path: /
+        pathType: Prefix

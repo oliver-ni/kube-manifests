@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: afd-icon
+  namespace: afd-icon
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: afd-icon
+  template:
+    metadata:
+      labels:
+        app: afd-icon
+    spec:
+      containers:
+      - image: ghcr.io/oliver-ni/afd-icon:latest
+        name: afd-icon
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: 500m
+            memory: 4Gi
+          requests:
+            cpu: 500m
+            memory: 4Gi

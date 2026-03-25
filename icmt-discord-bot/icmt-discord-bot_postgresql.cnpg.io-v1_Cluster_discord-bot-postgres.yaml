@@ -1,13 +1,12 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: tph-postgres
-  namespace: tph-2024-staging
+  name: discord-bot-postgres
+  namespace: icmt-discord-bot
 spec:
   bootstrap:
     initdb:
-      database: tph
-  imageName: ghcr.io/cloudnative-pg/postgresql:16
+      database: icmt_discord_bot
   instances: 3
   storage:
     size: 8Gi
