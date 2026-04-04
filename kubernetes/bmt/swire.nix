@@ -76,7 +76,7 @@
       metadata.annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
       spec = {
         rules = [{
-          host = "swire.berkeley.mt";
+          host = "swire-old.berkeley.mt";
           http = {
             paths = [
               {
@@ -99,7 +99,7 @@
           };
         }];
         tls = [{
-          hosts = [ "swire.berkeley.mt" ];
+          hosts = [ "swire-old.berkeley.mt" ];
           secretName = "swire-ingress-tls";
         }];
       };
