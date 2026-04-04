@@ -15,15 +15,15 @@ spec:
     spec:
       containers:
       - env:
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: discord-bot-postgres-app
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
               key: password
+              name: discord-bot-postgres-app
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
               name: discord-bot-postgres-app
         - name: DB_URI
           value: postgres://$(DB_USER):$(DB_PASS)@discord-bot-postgres-rw:5432/icmt_discord_bot

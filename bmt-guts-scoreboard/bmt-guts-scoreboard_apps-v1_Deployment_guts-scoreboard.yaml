@@ -15,20 +15,20 @@ spec:
     spec:
       containers:
       - env:
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: guts-scoreboard-postgres-app
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
               key: password
               name: guts-scoreboard-postgres-app
-        - name: DATABASE_URL
-          value: postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: guts-scoreboard-postgres-app
         - name: RUST_LOG
           value: tower_http=trace
+        - name: DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard
         envFrom:
         - secretRef:
             name: guts-scoreboard

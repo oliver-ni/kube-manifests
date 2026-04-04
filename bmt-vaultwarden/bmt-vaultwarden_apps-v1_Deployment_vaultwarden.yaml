@@ -15,15 +15,15 @@ spec:
     spec:
       containers:
       - env:
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: postgres-app
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
               key: password
+              name: postgres-app
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
               name: postgres-app
         - name: DATABASE_URL
           value: postgres://$(DB_USER):$(DB_PASS)@postgres-rw:5432/vaultwarden

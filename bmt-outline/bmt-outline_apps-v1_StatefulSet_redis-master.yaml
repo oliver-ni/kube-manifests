@@ -25,7 +25,7 @@ spec:
         checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
         checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
         checksum/scripts: 560c33ff34d845009b51830c332aa05fa211444d1877d3526d3599be7543aaa5
-        checksum/secret: b2c82d44673661d390392c1b212791fa2bf19a6d42323b784a01f2eb690aa6ab
+        checksum/secret: f9627b66f9294eb29812498318924c488df2df9db517d41ba2551b1cfa7464a4
         prometheus.io/port: '9121'
         prometheus.io/scrape: 'true'
       labels:
@@ -49,27 +49,95 @@ spec:
             weight: 1
       automountServiceAccountToken: false
       containers:
+      - command:
+        - /bin/bash
+        - -c
+        - |
+          if [[ -f '/secrets/redis-password' ]]; then
+          export REDIS_PASSWORD=$(cat /secrets/redis-password)
+          fi
+          redis_exporter
+        env:
+        - name: REDIS_ALIAS
+          value: redis
+        - name: REDIS_EXPORTER_WEB_LISTEN_ADDRESS
+          value: :9121
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: redis-password
+              name: redis
+        - name: REDIS_USER
+          value: default
+        image: docker.io/bitnamilegacy/redis-exporter:1.61.0-debian-12-r2
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: metrics
+          timeoutSeconds: 5
+        name: metrics
+        ports:
+        - containerPort: 9121
+          name: metrics
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: metrics
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
+          runAsNonRoot: true
+          runAsUser: 1001
+          seLinuxOptions: {}
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: empty-dir
+          subPath: app-tmp-dir
       - args:
         - -c
         - /opt/bitnami/scripts/start-scripts/start-master.sh
         command:
         - /bin/bash
         env:
-        - name: BITNAMI_DEBUG
-          value: 'false'
-        - name: REDIS_REPLICATION_MODE
-          value: master
         - name: ALLOW_EMPTY_PASSWORD
           value: 'no'
+        - name: BITNAMI_DEBUG
+          value: 'false'
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
               key: redis-password
               name: redis
-        - name: REDIS_TLS_ENABLED
-          value: 'no'
         - name: REDIS_PORT
           value: '6379'
+        - name: REDIS_REPLICATION_MODE
+          value: master
+        - name: REDIS_TLS_ENABLED
+          value: 'no'
         image: docker.io/bitnamilegacy/redis:7.2.5-debian-12-r2
         imagePullPolicy: IfNotPresent
         livenessProbe:
@@ -134,74 +202,6 @@ spec:
         - mountPath: /tmp
           name: empty-dir
           subPath: tmp-dir
-      - command:
-        - /bin/bash
-        - -c
-        - |
-          if [[ -f '/secrets/redis-password' ]]; then
-          export REDIS_PASSWORD=$(cat /secrets/redis-password)
-          fi
-          redis_exporter
-        env:
-        - name: REDIS_ALIAS
-          value: redis
-        - name: REDIS_EXPORTER_WEB_LISTEN_ADDRESS
-          value: :9121
-        - name: REDIS_USER
-          value: default
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: redis-password
-              name: redis
-        image: docker.io/bitnamilegacy/redis-exporter:1.61.0-debian-12-r2
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          failureThreshold: 5
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          tcpSocket:
-            port: metrics
-          timeoutSeconds: 5
-        name: metrics
-        ports:
-        - containerPort: 9121
-          name: metrics
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /
-            port: metrics
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-        resources:
-          limits:
-            cpu: 150m
-            ephemeral-storage: 1024Mi
-            memory: 192Mi
-          requests:
-            cpu: 100m
-            ephemeral-storage: 50Mi
-            memory: 128Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsGroup: 1001
-          runAsNonRoot: true
-          runAsUser: 1001
-          seLinuxOptions: {}
-          seccompProfile:
-            type: RuntimeDefault
-        volumeMounts:
-        - mountPath: /tmp
-          name: empty-dir
-          subPath: app-tmp-dir
       enableServiceLinks: true
       securityContext:
         fsGroup: 1001
@@ -212,18 +212,18 @@ spec:
       terminationGracePeriodSeconds: 30
       volumes:
       - configMap:
-          defaultMode: 493
-          name: redis-scripts
-        name: start-scripts
+          name: redis-configuration
+        name: config
+      - emptyDir: {}
+        name: empty-dir
       - configMap:
           defaultMode: 493
           name: redis-health
         name: health
       - configMap:
-          name: redis-configuration
-        name: config
-      - emptyDir: {}
-        name: empty-dir
+          defaultMode: 493
+          name: redis-scripts
+        name: start-scripts
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:

@@ -25,28 +25,28 @@ spec:
         env:
         - name: C_FORCE_ROOT
           value: 'true'
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              key: username
-              name: ag-postgres-app
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
               key: password
               name: ag-postgres-app
-        - name: DJANGO_DATABASE_URL
-          value: postgres://$(DB_USER):$(DB_PASS)@ag-postgres-rw:5432/atomicgrader
-        - name: RMQ_USER
+        - name: DB_USER
           valueFrom:
             secretKeyRef:
               key: username
-              name: ag-rabbitmq-default-user
+              name: ag-postgres-app
         - name: RMQ_PASS
           valueFrom:
             secretKeyRef:
               key: password
               name: ag-rabbitmq-default-user
+        - name: RMQ_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ag-rabbitmq-default-user
+        - name: DJANGO_DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@ag-postgres-rw:5432/atomicgrader
         - name: RABBITMQ_BROKER_URL
           value: amqp://$(RMQ_USER):$(RMQ_PASS)@ag-rabbitmq:5672/
         envFrom:
