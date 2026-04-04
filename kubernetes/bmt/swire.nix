@@ -8,15 +8,14 @@
       template = {
         metadata.labels.app = "swire-client";
         spec = {
-          containers = [{
-            name = "swire-client";
+          containers.swire-client = {
             image = "ghcr.io/berkeleymt/swire-client:latest";
             ports = [{ containerPort = 80; }];
             resources = {
               limits = { memory = "128Mi"; };
               requests = { cpu = "100m"; memory = "16Mi"; };
             };
-          }];
+          };
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };
@@ -33,8 +32,7 @@
       template = {
         metadata.labels.app = "swire-server";
         spec = {
-          containers = [{
-            name = "swire-server";
+          containers.swire-server = {
             image = "ghcr.io/berkeleymt/swire-server:latest";
             ports = [{ containerPort = 3001; }];
             envFrom = [{ secretRef.name = "swire"; }];
@@ -46,11 +44,10 @@
               mountPath = "/app/server/data";
               name = "swire-data";
             }];
-          }];
-          volumes = [{
-            name = "swire-data";
+          };
+          volumes.swire-data = {
             persistentVolumeClaim.claimName = "swire-data";
-          }];
+          };
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };

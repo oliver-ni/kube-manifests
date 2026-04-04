@@ -7,15 +7,14 @@
       selector.matchLabels.app = "afd-icon";
       template = {
         metadata.labels.app = "afd-icon";
-        spec.containers = [{
-          name = "afd-icon";
+        spec.containers.afd-icon = {
           image = "ghcr.io/oliver-ni/afd-icon:latest";
           ports = [{ containerPort = 8000; }];
           resources = {
             limits = { cpu = "500m"; memory = "4Gi"; };
             requests = { cpu = "500m"; memory = "4Gi"; };
           };
-        }];
+        };
       };
     };
 

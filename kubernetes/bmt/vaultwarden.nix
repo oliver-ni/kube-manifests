@@ -8,28 +8,26 @@
       template = {
         metadata.labels.app = "vaultwarden";
         spec = {
-          containers = [{
-            name = "vaultwarden";
+          containers.vaultwarden = {
             image = "vaultwarden/server:1.32.0-alpine";
             ports = [{ containerPort = 80; }];
             volumeMounts = [{
               name = "vaultwarden-data";
               mountPath = "/data";
             }];
-            env = [
-              { name = "DB_USER"; valueFrom.secretKeyRef = { name = "postgres-app"; key = "username"; }; }
-              { name = "DB_PASS"; valueFrom.secretKeyRef = { name = "postgres-app"; key = "password"; }; }
-              { name = "DATABASE_URL"; value = "postgres://$(DB_USER):$(DB_PASS)@postgres-rw:5432/vaultwarden"; }
-            ];
+            env = {
+              DB_USER.valueFrom.secretKeyRef = { name = "postgres-app"; key = "username"; };
+              DB_PASS.valueFrom.secretKeyRef = { name = "postgres-app"; key = "password"; };
+              DATABASE_URL.value = "postgres://$(DB_USER):$(DB_PASS)@postgres-rw:5432/vaultwarden";
+            };
             envFrom = [
               { secretRef.name = "vaultwarden"; }
               { configMapRef.name = "vaultwarden"; }
             ];
-          }];
-          volumes = [{
-            name = "vaultwarden-data";
+          };
+          volumes.vaultwarden-data = {
             persistentVolumeClaim.claimName = "vaultwarden-data";
-          }];
+          };
         };
       };
     };

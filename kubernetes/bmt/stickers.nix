@@ -8,8 +8,7 @@
       template = {
         metadata.labels.app = "stickers";
         spec = {
-          containers = [{
-            name = "stickers";
+          containers.stickers = {
             image = "ghcr.io/berkeleymt/stickers:latest";
             ports = [{ containerPort = 8000; }];
             envFrom = [{ secretRef.name = "stickers"; }];
@@ -17,7 +16,7 @@
               limits = { memory = "512Mi"; };
               requests = { cpu = "20m"; memory = "64Mi"; };
             };
-          }];
+          };
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };

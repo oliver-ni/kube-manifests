@@ -6,15 +6,15 @@ let
     { secretRef.name = "ag-otter"; }
     { configMapRef.name = "ag-otter"; }
   ];
-  env = [
-    { name = "C_FORCE_ROOT"; value = "true"; }
-    { name = "DB_USER"; valueFrom.secretKeyRef = { name = "ag-postgres-app"; key = "username"; }; }
-    { name = "DB_PASS"; valueFrom.secretKeyRef = { name = "ag-postgres-app"; key = "password"; }; }
-    { name = "DJANGO_DATABASE_URL"; value = "postgres://$(DB_USER):$(DB_PASS)@ag-postgres-rw:5432/atomicgrader"; }
-    { name = "RMQ_USER"; valueFrom.secretKeyRef = { name = "ag-rabbitmq-default-user"; key = "username"; }; }
-    { name = "RMQ_PASS"; valueFrom.secretKeyRef = { name = "ag-rabbitmq-default-user"; key = "password"; }; }
-    { name = "RABBITMQ_BROKER_URL"; value = "amqp://$(RMQ_USER):$(RMQ_PASS)@ag-rabbitmq:5672/"; }
-  ];
+  env = {
+    C_FORCE_ROOT.value = "true";
+    DB_USER.valueFrom.secretKeyRef = { name = "ag-postgres-app"; key = "username"; };
+    DB_PASS.valueFrom.secretKeyRef = { name = "ag-postgres-app"; key = "password"; };
+    DJANGO_DATABASE_URL.value = "postgres://$(DB_USER):$(DB_PASS)@ag-postgres-rw:5432/atomicgrader";
+    RMQ_USER.valueFrom.secretKeyRef = { name = "ag-rabbitmq-default-user"; key = "username"; };
+    RMQ_PASS.valueFrom.secretKeyRef = { name = "ag-rabbitmq-default-user"; key = "password"; };
+    RABBITMQ_BROKER_URL.value = "amqp://$(RMQ_USER):$(RMQ_PASS)@ag-rabbitmq:5672/";
+  };
   volumeMounts = [{
     mountPath = "/assets";
     name = "ag-assets";
@@ -48,33 +48,29 @@ in
       template = {
         metadata.labels.app = "ag-otter";
         spec = {
-          containers = [{
+          containers.otter = {
             inherit image env envFrom volumeMounts;
-            name = "otter";
             ports = [{ containerPort = 8000; }];
             resources = {
               limits = { memory = "4Gi"; };
               requests = { cpu = "50m"; memory = "1Gi"; };
             };
-          }];
+          };
 
-          initContainers = [
-            {
+          initContainers = {
+            migrate = {
               inherit image env envFrom volumeMounts;
-              name = "migrate";
               command = [ "python" "manage.py" "migrate" ];
-            }
-            {
+            };
+            collectstatic = {
               inherit image env envFrom volumeMounts;
-              name = "collectstatic";
               command = [ "python" "manage.py" "collectstatic" "--no-input" ];
-            }
-          ];
+            };
+          };
 
-          volumes = [{
-            name = "ag-assets";
+          volumes.ag-assets = {
             persistentVolumeClaim.claimName = "ag-assets";
-          }];
+          };
 
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
@@ -86,19 +82,17 @@ in
       template = {
         metadata.labels.app = "ag-otter-worker";
         spec = {
-          containers = [{
+          containers.otter-worker = {
             inherit image env envFrom volumeMounts;
-            name = "otter-worker";
             command = [ "celery" "-A" "config" "worker" "-l" "info" "--concurrency" "1" ];
             resources = {
               limits = { memory = "8Gi"; };
               requests = { cpu = "50m"; memory = "1Gi"; };
             };
-          }];
-          volumes = [{
-            name = "ag-assets";
+          };
+          volumes.ag-assets = {
             persistentVolumeClaim.claimName = "ag-assets";
-          }];
+          };
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };

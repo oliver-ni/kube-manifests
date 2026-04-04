@@ -14,22 +14,21 @@
       template = {
         metadata.labels.app = "guts-scoreboard";
         spec = {
-          containers = [{
-            name = "guts-scoreboard";
+          containers.guts-scoreboard = {
             image = "ghcr.io/berkeleymt/guts-scoreboard:latest";
             ports = [{ containerPort = 4887; }];
-            env = [
-              { name = "DB_USER"; valueFrom.secretKeyRef = { name = "guts-scoreboard-postgres-app"; key = "username"; }; }
-              { name = "DB_PASS"; valueFrom.secretKeyRef = { name = "guts-scoreboard-postgres-app"; key = "password"; }; }
-              { name = "DATABASE_URL"; value = "postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard"; }
-              { name = "RUST_LOG"; value = "tower_http=trace"; }
-            ];
+            env = {
+              DB_USER.valueFrom.secretKeyRef = { name = "guts-scoreboard-postgres-app"; key = "username"; };
+              DB_PASS.valueFrom.secretKeyRef = { name = "guts-scoreboard-postgres-app"; key = "password"; };
+              DATABASE_URL.value = "postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard";
+              RUST_LOG.value = "tower_http=trace";
+            };
             envFrom = [{ secretRef.name = "guts-scoreboard"; }];
             resources = {
               limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "64Mi"; };
             };
-          }];
+          };
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };

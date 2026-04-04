@@ -8,8 +8,7 @@
       template = {
         metadata.labels.app = "contestdojo-verifier-bot";
         spec = {
-          containers = [{
-            name = "contestdojo-verifier-bot";
+          containers.contestdojo-verifier-bot = {
             image = "ghcr.io/berkeleymt/contestdojo-verifier-bot:latest";
             ports = [{ containerPort = 4887; }];
             envFrom = [{ secretRef.name = "contestdojo-verifier-bot"; }];
@@ -17,7 +16,7 @@
               limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "64Mi"; };
             };
-          }];
+          };
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };

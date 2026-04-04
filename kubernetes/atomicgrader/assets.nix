@@ -13,8 +13,7 @@
       template = {
         metadata.labels.app = "ag-assets";
         spec = {
-          containers = [{
-            name = "ag-assets";
+          containers.ag-assets = {
             image = "nginx:1.23.4-alpine-slim";
             ports = [{ containerPort = 80; }];
             resources = {
@@ -25,11 +24,10 @@
               mountPath = "/usr/share/nginx/html";
               name = "ag-assets";
             }];
-          }];
-          volumes = [{
-            name = "ag-assets";
+          };
+          volumes.ag-assets = {
             persistentVolumeClaim.claimName = "ag-assets";
-          }];
+          };
         };
       };
     };

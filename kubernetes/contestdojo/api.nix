@@ -5,8 +5,7 @@
       selector.matchLabels.app = "contestdojo-api";
       template = {
         metadata.labels.app = "contestdojo-api";
-        spec.containers = [{
-          name = "contestdojo-api";
+        spec.containers.contestdojo-api = {
           image = "ghcr.io/contestdojo/api:main";
           imagePullPolicy = "Always";
           ports = [{ containerPort = 8000; }];
@@ -15,7 +14,7 @@
             requests = { memory = "50Mi"; cpu = "50m"; };
           };
           envFrom = [{ secretRef = { name = "contestdojo-api"; }; }];
-        }];
+        };
       };
     };
 
