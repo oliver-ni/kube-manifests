@@ -31,11 +31,6 @@
       };
     };
 
-    v1.Secret.ghcr-auth = {
-      type = "kubernetes.io/dockerconfigjson";
-      stringData.".dockerconfigjson" = "";
-    };
-
     v1.Service.estimathon-scoreboard.spec = {
       selector.app = "estimathon-scoreboard";
       ports = [{
