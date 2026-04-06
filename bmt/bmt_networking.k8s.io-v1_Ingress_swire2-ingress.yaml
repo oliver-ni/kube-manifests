@@ -3,28 +3,21 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-  name: swire-ingress
+  name: swire2-ingress
   namespace: bmt
 spec:
   rules:
-  - host: swire-old.berkeley.mt
+  - host: swire.berkeley.mt
     http:
       paths:
       - backend:
           service:
-            name: swire-server
-            port:
-              number: 80
-        path: /api/
-        pathType: Prefix
-      - backend:
-          service:
-            name: swire-client
+            name: swire2
             port:
               number: 80
         path: /
         pathType: Prefix
   tls:
   - hosts:
-    - swire-old.berkeley.mt
-    secretName: swire-ingress-tls
+    - swire.berkeley.mt
+    secretName: swire2-ingress-tls

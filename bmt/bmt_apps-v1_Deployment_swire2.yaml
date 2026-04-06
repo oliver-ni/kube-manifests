@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swire2
+  namespace: bmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swire2
+  template:
+    metadata:
+      labels:
+        app: swire2
+    spec:
+      containers:
+      - env:
+        - name: API_BASE_URL
+          value: https://swire.berkeley.mt
+        - name: APP_ENV
+          value: production
+        - name: CORS_ALLOW_ORIGINS
+          value: https://swire.berkeley.mt
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              key: uri
+              name: swire2-postgres-app
+        - name: PORT
+          value: '8000'
+        - name: PROCTOR_EMAIL_LOGIN_ENABLED
+          value: 'false'
+        - name: RUN_MIGRATIONS
+          value: 'true'
+        - name: SERVE_FRONTEND
+          value: 'true'
+        - name: SUPER_ADMIN_EMAIL_OTP_REQUIRED
+          value: 'false'
+        - name: WEB_CONCURRENCY
+          value: '2'
+        envFrom:
+        - secretRef:
+            name: swire2
+        image: ghcr.io/berkeleymt/swire2:latest
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          periodSeconds: 10
+        name: swire2
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            path: /health/db
+            port: 8000
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 64Mi
+      imagePullSecrets:
+      - name: ghcr-auth

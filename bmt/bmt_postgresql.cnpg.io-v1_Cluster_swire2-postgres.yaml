@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: swire2-postgres
+  namespace: bmt
+spec:
+  bootstrap:
+    initdb:
+      database: swire2
+  instances: 1
+  storage:
+    size: 8Gi
