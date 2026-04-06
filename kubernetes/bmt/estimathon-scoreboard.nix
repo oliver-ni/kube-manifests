@@ -19,7 +19,6 @@
             ports = [{ containerPort = 8080; }];
             env = {
               DATABASE_URL.valueFrom.secretKeyRef = { name = "estimathon-scoreboard-postgres-app"; key = "uri"; };
-              RUST_LOG.value = "info";
             };
             envFrom = [{ secretRef.name = "estimathon-scoreboard"; }];
             resources = {
