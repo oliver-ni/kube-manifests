@@ -18,9 +18,7 @@
             image = "ghcr.io/berkeleymt/estimathon-scoreboard:latest";
             ports = [{ containerPort = 8080; }];
             env = {
-              DB_USER.valueFrom.secretKeyRef = { name = "estimathon-scoreboard-postgres-app"; key = "username"; };
-              DB_PASS.valueFrom.secretKeyRef = { name = "estimathon-scoreboard-postgres-app"; key = "password"; };
-              DATABASE_URL.value = "postgres://$(DB_USER):$(DB_PASS)@estimathon-scoreboard-postgres-rw:5432/estimathon";
+              DATABASE_URL.valueFrom.secretKeyRef = { name = "estimathon-scoreboard-postgres-app"; key = "uri"; };
               HOST.value = "0.0.0.0";
               PORT.value = "8080";
               STATIC_DIR.value = "./dist";
