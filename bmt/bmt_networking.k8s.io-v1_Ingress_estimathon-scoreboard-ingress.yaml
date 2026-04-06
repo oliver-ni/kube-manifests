@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: estimathon-scoreboard-ingress
+  namespace: bmt
+spec:
+  rules:
+  - host: estimathon.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: estimathon-scoreboard
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - estimathon.berkeley.mt
+    secretName: estimathon-scoreboard-ingress-tls

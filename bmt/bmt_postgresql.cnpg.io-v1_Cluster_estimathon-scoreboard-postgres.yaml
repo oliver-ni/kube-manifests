@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: estimathon-scoreboard-postgres
+  namespace: bmt
+spec:
+  bootstrap:
+    initdb:
+      database: estimathon
+  instances: 3
+  storage:
+    size: 8Gi
