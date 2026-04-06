@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  namespaces.bmt-estimathon-scoreboard.resources = {
+  namespaces.bmt.resources = {
     "postgresql.cnpg.io/v1".Cluster.estimathon-scoreboard-postgres.spec = {
       instances = 3;
       bootstrap.initdb.database = "estimathon";
