@@ -23,7 +23,7 @@
               DATABASE_URL.value = "postgres://$(DB_USER):$(DB_PASS)@estimathon-scoreboard-postgres-rw:5432/estimathon";
               HOST.value = "0.0.0.0";
               PORT.value = "8080";
-              BUILD_PATH.value = "./dist";
+              STATIC_DIR.value = "./dist";
               RUST_LOG.value = "info";
             };
             envFrom = [{ secretRef.name = "estimathon-scoreboard"; }];
