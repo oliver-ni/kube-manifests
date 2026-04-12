@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: live-ingress
+  namespace: bmt
+spec:
+  rules:
+  - host: live.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: live
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - live.berkeley.mt
+    secretName: live-ingress-tls

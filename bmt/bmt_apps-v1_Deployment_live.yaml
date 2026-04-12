@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: live
+  namespace: bmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: live
+  template:
+    metadata:
+      labels:
+        app: live
+    spec:
+      containers:
+      - env:
+        - name: POSTMARK_FROM_ADDRESS
+          value: noreply@berkeley.mt
+        - name: SITE_BASE_URL
+          value: https://live.berkeley.mt
+        - name: STATIC_DIR
+          value: /app/dist
+        envFrom:
+        - secretRef:
+            name: live
+        image: ghcr.io/berkeleymt/live.berkeley.mt:latest
+        name: live
+        ports:
+        - containerPort: 3001
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 32Mi
+        volumeMounts:
+        - mountPath: /app/data
+          name: data
+        workingDir: /app/data
+      imagePullSecrets:
+      - name: ghcr-auth
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: live-data
