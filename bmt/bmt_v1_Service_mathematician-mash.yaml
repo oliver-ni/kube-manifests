@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mathematician-mash
-  namespace: mathematician-mash
+  namespace: bmt
 spec:
   ports:
   - port: 80
