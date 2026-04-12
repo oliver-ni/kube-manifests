@@ -6,6 +6,7 @@
       instances = 3;
       bootstrap.initdb.database = "atomicgrader";
       storage.size = "8Gi";
+      postgresql.parameters.max_connections = "500";
     };
 
     "rabbitmq.com/v1beta1".RabbitmqCluster.ag-rabbitmq.spec = {

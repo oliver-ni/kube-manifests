@@ -39,6 +39,18 @@
       }];
     };
 
+    v1.Service.estimathon-scoreboard-postgres-lb.spec = {
+      type = "LoadBalancer";
+      selector = {
+        "cnpg.io/cluster" = "estimathon-scoreboard-postgres";
+        role = "primary";
+      };
+      ports = [{
+        port = 5432;
+        targetPort = 5432;
+      }];
+    };
+
     v1.Secret.estimathon-scoreboard.stringData = {
       JWT_SECRET = "";
     };
