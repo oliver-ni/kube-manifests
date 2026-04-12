@@ -51,6 +51,7 @@
 
     v1.Secret.live.stringData = {
       POSTMARK_SERVER_TOKEN = "";
+      ADMIN_PASSWORD = "";
     };
 
     "networking.k8s.io/v1".Ingress.live-ingress = {
