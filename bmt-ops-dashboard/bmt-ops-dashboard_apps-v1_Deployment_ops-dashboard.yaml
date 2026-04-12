@@ -16,7 +16,7 @@ spec:
       containers:
       - env:
         - name: CORS_ORIGINS
-          value: https://ops.berkeley.mt
+          value: https://sy-stem.berkeley.mt
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
