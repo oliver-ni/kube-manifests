@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: mathematician-mash-ingress
+  namespace: mathematician-mash
+spec:
+  rules:
+  - host: m2.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: mathematician-mash
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - m2.berkeley.mt
+    secretName: mathematician-mash-ingress-tls
