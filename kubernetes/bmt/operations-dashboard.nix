@@ -21,7 +21,7 @@
               DB_USER.valueFrom.secretKeyRef = { name = "ops-dashboard-postgres-app"; key = "username"; };
               DB_PASS.valueFrom.secretKeyRef = { name = "ops-dashboard-postgres-app"; key = "password"; };
               DATABASE_URL.value = "postgresql+asyncpg://$(DB_USER):$(DB_PASS)@ops-dashboard-postgres-rw:5432/operations_dashboard";
-              CORS_ORIGINS.value = "https://ops.berkeley.mt";
+              CORS_ORIGINS.value = "https://sy-stem.berkeley.mt";
             };
             envFrom = [{ secretRef.name = "ops-dashboard"; }];
             resources = {
@@ -58,7 +58,7 @@
       spec = {
         ingressClassName = "nginx";
         rules = [{
-          host = "ops.berkeley.mt";
+          host = "sy-stem.berkeley.mt";
           http.paths = [{
             path = "/";
             pathType = "Prefix";
@@ -69,7 +69,7 @@
           }];
         }];
         tls = [{
-          hosts = [ "ops.berkeley.mt" ];
+          hosts = [ "sy-stem.berkeley.mt" ];
           secretName = "ops-dashboard-ingress-tls";
         }];
       };
