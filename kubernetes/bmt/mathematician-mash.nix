@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  namespaces.mathematician-mash.resources = {
+  namespaces.bmt.resources = {
     v1.PersistentVolumeClaim.mathematician-mash-data.spec = {
       accessModes = [ "ReadWriteOnce" ];
       resources.requests.storage = "1Gi";
@@ -40,11 +40,6 @@
         port = 80;
         targetPort = 8000;
       }];
-    };
-
-    v1.Secret.ghcr-auth = {
-      type = "kubernetes.io/dockerconfigjson";
-      stringData.".dockerconfigjson" = "";
     };
 
     v1.Secret.mathematician-mash-basic-auth = {
