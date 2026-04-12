@@ -25,7 +25,7 @@
             };
             envFrom = [{ secretRef.name = "ops-dashboard"; }];
             resources = {
-              limits = { memory = "512Mi"; };
+              limits = { memory = "4Gi"; };
               requests = { cpu = "50m"; memory = "64Mi"; };
             };
           };

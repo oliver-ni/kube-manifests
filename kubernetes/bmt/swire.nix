@@ -37,7 +37,7 @@
             ports = [{ containerPort = 3001; }];
             envFrom = [{ secretRef.name = "swire"; }];
             resources = {
-              limits = { memory = "1Gi"; };
+              limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "64Mi"; };
             };
             volumeMounts = [{

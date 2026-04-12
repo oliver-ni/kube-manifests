@@ -34,7 +34,7 @@
               API_BASE_URL.value = "https://swire.berkeley.mt";
             };
             resources = {
-              limits = { memory = "1Gi"; };
+              limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "64Mi"; };
             };
             livenessProbe = {
