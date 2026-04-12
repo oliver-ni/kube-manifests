@@ -8,5 +8,8 @@ spec:
     initdb:
       database: atomicgrader
   instances: 3
+  postgresql:
+    parameters:
+      max_connections: '500'
   storage:
     size: 8Gi
