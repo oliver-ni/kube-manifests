@@ -47,8 +47,18 @@
       stringData.".dockerconfigjson" = "";
     };
 
+    v1.Secret.mathematician-mash-basic-auth = {
+      type = "Opaque";
+      stringData.auth = "";
+    };
+
     "networking.k8s.io/v1".Ingress.mathematician-mash-ingress = {
-      metadata.annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
+      metadata.annotations = {
+        "cert-manager.io/cluster-issuer" = "letsencrypt";
+        "nginx.ingress.kubernetes.io/auth-type" = "basic";
+        "nginx.ingress.kubernetes.io/auth-secret" = "mathematician-mash-basic-auth";
+        "nginx.ingress.kubernetes.io/auth-realm" = "Authentication Required";
+      };
       spec = {
         rules = [{
           host = "m2.berkeley.mt";
