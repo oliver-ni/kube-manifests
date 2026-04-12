@@ -16,11 +16,11 @@ spec:
       containers:
       - env:
         - name: API_BASE_URL
-          value: https://swire.berkeley.mt
+          value: https://swire-new.berkeley.mt
         - name: APP_ENV
           value: production
         - name: CORS_ALLOW_ORIGINS
-          value: https://swire.berkeley.mt
+          value: https://swire-new.berkeley.mt
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:

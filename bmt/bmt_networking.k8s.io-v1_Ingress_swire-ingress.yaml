@@ -7,7 +7,7 @@ metadata:
   namespace: bmt
 spec:
   rules:
-  - host: swire-old.berkeley.mt
+  - host: swire.berkeley.mt
     http:
       paths:
       - backend:
@@ -26,5 +26,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - swire-old.berkeley.mt
+    - swire.berkeley.mt
     secretName: swire-ingress-tls
