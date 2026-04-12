@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ops-dashboard
+  namespace: bmt-ops-dashboard
+spec:
+  ports:
+  - port: 80
+    targetPort: 8001
+  selector:
+    app: ops-dashboard

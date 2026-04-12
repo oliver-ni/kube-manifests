@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ops-dashboard-postgres
+  namespace: bmt-ops-dashboard
+spec:
+  bootstrap:
+    initdb:
+      database: operations_dashboard
+  instances: 1
+  storage:
+    size: 2Gi

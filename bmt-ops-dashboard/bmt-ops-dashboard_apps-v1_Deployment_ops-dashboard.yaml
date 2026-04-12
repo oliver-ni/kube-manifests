@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ops-dashboard
+  namespace: bmt-ops-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ops-dashboard
+  template:
+    metadata:
+      labels:
+        app: ops-dashboard
+    spec:
+      containers:
+      - env:
+        - name: CORS_ORIGINS
+          value: https://ops.berkeley.mt
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: ops-dashboard-postgres-app
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: ops-dashboard-postgres-app
+        - name: DATABASE_URL
+          value: postgresql+asyncpg://$(DB_USER):$(DB_PASS)@ops-dashboard-postgres-rw:5432/operations_dashboard
+        envFrom:
+        - secretRef:
+            name: ops-dashboard
+        image: ghcr.io/tri2k/operations-dashboard:latest
+        name: ops-dashboard
+        ports:
+        - containerPort: 8001
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      imagePullSecrets:
+      - name: ghcr-auth
