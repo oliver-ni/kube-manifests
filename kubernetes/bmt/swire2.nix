@@ -26,12 +26,12 @@
               APP_ENV.value = "production";
               SERVE_FRONTEND.value = "true";
               RUN_MIGRATIONS.value = "true";
-              CORS_ALLOW_ORIGINS.value = "https://swire.berkeley.mt";
+              CORS_ALLOW_ORIGINS.value = "https://swire-new.berkeley.mt";
               SUPER_ADMIN_EMAIL_OTP_REQUIRED.value = "false";
               PROCTOR_EMAIL_LOGIN_ENABLED.value = "false";
               PORT.value = "8000";
               WEB_CONCURRENCY.value = "2";
-              API_BASE_URL.value = "https://swire.berkeley.mt";
+              API_BASE_URL.value = "https://swire-new.berkeley.mt";
             };
             resources = {
               limits = { memory = "4Gi"; };
@@ -69,7 +69,7 @@
       metadata.annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
       spec = {
         rules = [{
-          host = "swire.berkeley.mt";
+          host = "swire-new.berkeley.mt";
           http.paths = [{
             path = "/";
             pathType = "Prefix";
@@ -80,7 +80,7 @@
           }];
         }];
         tls = [{
-          hosts = [ "swire.berkeley.mt" ];
+          hosts = [ "swire-new.berkeley.mt" ];
           secretName = "swire2-ingress-tls";
         }];
       };
