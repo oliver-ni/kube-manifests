@@ -26,6 +26,7 @@
               name = "data";
               mountPath = "/app/data";
             }];
+            command = [ "/app/server" ];
             workingDir = "/app/data";
             resources = {
               limits = { memory = "512Mi"; };
