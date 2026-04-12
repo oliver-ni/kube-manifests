@@ -3,9 +3,6 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/auth-realm: Authentication Required
-    nginx.ingress.kubernetes.io/auth-secret: mathematician-mash-basic-auth
-    nginx.ingress.kubernetes.io/auth-type: basic
   name: mathematician-mash-ingress
   namespace: bmt
 spec:
