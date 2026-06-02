@@ -16,7 +16,7 @@
             env = {
               EULA.value = "TRUE";
               TYPE.value = "PAPER";
-              VERSION.value = "1.21.11";
+              VERSION.value = "26.1.2";
               # JVM heap; kept below the container limit to leave headroom
               # for off-heap memory, metaspace, etc.
               MEMORY.value = "3G";
