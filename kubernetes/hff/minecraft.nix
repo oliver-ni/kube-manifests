@@ -20,6 +20,8 @@
               # JVM heap; kept below the container limit to leave headroom
               # for off-heap memory, metaspace, etc.
               MEMORY.value = "3G";
+              DIFFICULTY.value = "normal";
+              SPAWN_PROTECTION.value = "0";
               ENABLE_WHITELIST.value = "TRUE";
               ENFORCE_WHITELIST.value = "TRUE";
               # Authoritative whitelist: reconciles server whitelist to exactly
