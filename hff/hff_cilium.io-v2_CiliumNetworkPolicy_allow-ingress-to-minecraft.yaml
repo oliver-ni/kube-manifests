@@ -1,0 +1,12 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-ingress-to-minecraft
+  namespace: hff
+spec:
+  endpointSelector:
+    matchLabels:
+      app: minecraft
+  ingress:
+  - fromEntities:
+    - all

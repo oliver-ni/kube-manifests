@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft
+  namespace: hff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      containers:
+      - env:
+        - name: ENABLE_WHITELIST
+          value: 'TRUE'
+        - name: ENFORCE_WHITELIST
+          value: 'TRUE'
+        - name: EULA
+          value: 'TRUE'
+        - name: MEMORY
+          value: 3G
+        - name: OVERRIDE_WHITELIST
+          value: 'TRUE'
+        - name: TYPE
+          value: PAPER
+        - name: VERSION
+          value: 1.21.11
+        - name: WHITELIST
+          value: gojosleftsock69,zinn024,wnsgml7,mcparadox,Organically
+        image: itzg/minecraft-server:latest
+        livenessProbe:
+          exec:
+            command:
+            - mc-health
+          failureThreshold: 6
+          initialDelaySeconds: 120
+          periodSeconds: 30
+        name: minecraft
+        ports:
+        - containerPort: 25565
+        readinessProbe:
+          exec:
+            command:
+            - mc-health
+          failureThreshold: 18
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        volumeMounts:
+        - mountPath: /data
+          name: minecraft-data
+      volumes:
+      - name: minecraft-data
+        persistentVolumeClaim:
+          claimName: minecraft-data
