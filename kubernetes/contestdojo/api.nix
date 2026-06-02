@@ -13,6 +13,10 @@
             limits = { memory = "500Mi"; };
             requests = { memory = "50Mi"; cpu = "50m"; };
           };
+          env = [
+            { name = "OIDC_ISSUER"; value = "https://contestdojo.com/api/oidc"; }
+            { name = "OIDC_AUDIENCE"; value = "https://api.contestdojo.com"; }
+          ];
           envFrom = [{ secretRef = { name = "contestdojo-api"; }; }];
         };
       };
