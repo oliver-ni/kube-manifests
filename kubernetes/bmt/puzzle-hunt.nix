@@ -9,6 +9,8 @@ let
   env = {
     DATABASE_URL.valueFrom.secretKeyRef = { name = "puzzle-hunt-postgres-app"; key = "uri"; };
     CLIENT_DOMAIN.value = "https://puzzlehunt.berkeley.mt";
+    # The public origin, so better-auth builds correct cookie/redirect URLs.
+    BETTER_AUTH_URL.value = "https://puzzlehunt.berkeley.mt";
     # Used only for server-side rendering's self-requests (PORT defaults to 9000).
     SERVER_URL.value = "http://127.0.0.1:9000";
   };
