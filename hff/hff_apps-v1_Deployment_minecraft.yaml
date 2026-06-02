@@ -34,7 +34,7 @@ spec:
         - name: TYPE
           value: PAPER
         - name: VERSION
-          value: 1.21.11
+          value: 26.1.2
         - name: WHITELIST
           value: gojosleftsock69,zinn024,wnsgml7,mcparadox,Organically
         image: itzg/minecraft-server:latest
