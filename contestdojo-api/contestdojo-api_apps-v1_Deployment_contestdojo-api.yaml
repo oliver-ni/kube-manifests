@@ -14,7 +14,12 @@ spec:
         app: contestdojo-api
     spec:
       containers:
-      - envFrom:
+      - env:
+        - name: OIDC_AUDIENCE
+          value: https://api.contestdojo.com
+        - name: OIDC_ISSUER
+          value: https://contestdojo.com/api/oidc
+        envFrom:
         - secretRef:
             name: contestdojo-api
         image: ghcr.io/contestdojo/api:main
