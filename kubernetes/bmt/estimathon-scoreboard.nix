@@ -27,7 +27,7 @@
 
               # Only students registered for the BmMT 2026 event may log in.
               # TODO: set to the real BmMT 2026 ContestDojo event ID (empty = gate off).
-              CONTESTDOJO_EVENT_ID.value = "";
+              CONTESTDOJO_EVENT_ID.value = "YXLHTTg2mkC0RyWEXpVz";
             };
             envFrom = [{ secretRef.name = "estimathon-scoreboard"; }];
             resources = {
