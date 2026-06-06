@@ -15,6 +15,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: BETTER_AUTH_URL
+          value: https://puzzlehunt.berkeley.mt
         - name: CLIENT_DOMAIN
           value: https://puzzlehunt.berkeley.mt
         - name: DATABASE_URL
@@ -47,6 +49,8 @@ spec:
         - --config
         - drizzle.config.ts
         env:
+        - name: BETTER_AUTH_URL
+          value: https://puzzlehunt.berkeley.mt
         - name: CLIENT_DOMAIN
           value: https://puzzlehunt.berkeley.mt
         - name: DATABASE_URL
