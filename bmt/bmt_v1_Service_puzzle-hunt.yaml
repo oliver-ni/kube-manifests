@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: puzzle-hunt
+  namespace: bmt
+spec:
+  ports:
+  - port: 80
+    targetPort: 9000
+  selector:
+    app: puzzle-hunt

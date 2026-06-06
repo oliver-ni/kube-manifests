@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: puzzle-hunt
+  namespace: bmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: puzzle-hunt
+  template:
+    metadata:
+      labels:
+        app: puzzle-hunt
+    spec:
+      containers:
+      - env:
+        - name: CLIENT_DOMAIN
+          value: https://puzzlehunt.berkeley.mt
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              key: uri
+              name: puzzle-hunt-postgres-app
+        - name: SERVER_URL
+          value: http://127.0.0.1:9000
+        envFrom:
+        - secretRef:
+            name: puzzle-hunt
+        image: ghcr.io/berkeleymt/bph-site:latest
+        name: puzzle-hunt
+        ports:
+        - containerPort: 9000
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      imagePullSecrets:
+      - name: ghcr-auth
+      initContainers:
+      - command:
+        - node
+        - node_modules/drizzle-kit/bin.cjs
+        - push
+        - --config
+        - drizzle.config.ts
+        env:
+        - name: CLIENT_DOMAIN
+          value: https://puzzlehunt.berkeley.mt
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              key: uri
+              name: puzzle-hunt-postgres-app
+        - name: SERVER_URL
+          value: http://127.0.0.1:9000
+        envFrom:
+        - secretRef:
+            name: puzzle-hunt
+        image: ghcr.io/berkeleymt/bph-site:latest
+        name: migrate
+        workingDir: /app/server

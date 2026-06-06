@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: puzzle-hunt-postgres
+  namespace: bmt
+spec:
+  bootstrap:
+    initdb:
+      database: puzzlehunt
+  instances: 1
+  storage:
+    size: 2Gi
