@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ag-otter-worker
+  name: ag-otter-worker-async
   namespace: atomicgrader
 spec:
   selector:
     matchLabels:
-      app: ag-otter-worker
+      app: ag-otter-worker-async
   template:
     metadata:
       labels:
-        app: ag-otter-worker
+        app: ag-otter-worker-async
     spec:
       containers:
       - command:
@@ -21,9 +21,11 @@ spec:
         - -l
         - info
         - -Q
-        - image_processing
+        - gemini
+        - --pool
+        - threads
         - --concurrency
-        - '1'
+        - '64'
         env:
         - name: C_FORCE_ROOT
           value: 'true'
