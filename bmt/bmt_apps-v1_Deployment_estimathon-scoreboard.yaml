@@ -15,11 +15,17 @@ spec:
     spec:
       containers:
       - env:
+        - name: CONTESTDOJO_EVENT_ID
+          value: YXLHTTg2mkC0RyWEXpVz
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
               key: uri
               name: estimathon-scoreboard-postgres-app
+        - name: OIDC_ISSUER_URL
+          value: https://contestdojo.com/api/oidc
+        - name: OIDC_REDIRECT_URI
+          value: https://estimathon.berkeley.mt/api/student/callback
         envFrom:
         - secretRef:
             name: estimathon-scoreboard
