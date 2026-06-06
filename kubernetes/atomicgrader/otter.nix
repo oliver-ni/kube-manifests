@@ -48,6 +48,8 @@ in
       template = {
         metadata.labels.app = "ag-otter";
         spec = {
+          replicas = 1;
+
           containers.otter = {
             inherit image env envFrom volumeMounts;
             ports = [{ containerPort = 8000; }];
@@ -82,6 +84,7 @@ in
       template = {
         metadata.labels.app = "ag-otter-worker";
         spec = {
+          replicas = 20;
           containers.otter-worker = {
             inherit image env envFrom volumeMounts;
             command = [ "celery" "-A" "config" "worker" "-l" "info" "-Q" "image_processing" "--concurrency" "1" ];
@@ -103,6 +106,7 @@ in
       template = {
         metadata.labels.app = "ag-otter-worker-async";
         spec = {
+          replicas = 2;
           containers.otter-worker = {
             inherit image env envFrom volumeMounts;
             command = [ "celery" "-A" "config" "worker" "-l" "info" "-Q" "gemini" "--pool" "threads" "--concurrency" "64" ];
