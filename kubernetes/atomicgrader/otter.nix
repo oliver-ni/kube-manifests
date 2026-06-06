@@ -84,7 +84,28 @@ in
         spec = {
           containers.otter-worker = {
             inherit image env envFrom volumeMounts;
-            command = [ "celery" "-A" "config" "worker" "-l" "info" "--concurrency" "1" ];
+            command = [ "celery" "-A" "config" "worker" "-l" "info" "-Q" "image_processing" "--concurrency" "1" ];
+            resources = {
+              limits = { memory = "8Gi"; };
+              requests = { cpu = "50m"; memory = "1Gi"; };
+            };
+          };
+          volumes.ag-assets = {
+            persistentVolumeClaim.claimName = "ag-assets";
+          };
+          imagePullSecrets = [{ name = "ghcr-auth"; }];
+        };
+      };
+    };
+
+    "apps/v1".Deployment.ag-otter-worker-async.spec = {
+      selector.matchLabels.app = "ag-otter-worker-async";
+      template = {
+        metadata.labels.app = "ag-otter-worker-async";
+        spec = {
+          containers.otter-worker = {
+            inherit image env envFrom volumeMounts;
+            command = [ "celery" "-A" "config" "worker" "-l" "info" "-Q" "gemini" "--pool" "threads" "--concurrency" "64" ];
             resources = {
               limits = { memory = "8Gi"; };
               requests = { cpu = "50m"; memory = "1Gi"; };
