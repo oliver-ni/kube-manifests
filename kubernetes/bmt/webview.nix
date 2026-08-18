@@ -50,12 +50,10 @@
 
     v1.Secret.webview.stringData = {
       WEBVIEW_PASSWORD = "";
-      SECRET_KEY = "insert long random value";
-      GIT_TOKEN = "insert PAT with read/write on the contest repo";
-      # Optional "Log in with Discord" (also needs a discord: section in the
-      # contest repo's webview.yml):
-      # DISCORD_CLIENT_SECRET = "";
-      # DISCORD_BOT_TOKEN = "";
+      SECRET_KEY = "";
+      GIT_TOKEN = "";
+      DISCORD_CLIENT_SECRET = "";
+      DISCORD_BOT_TOKEN = "";
     };
 
     v1.Secret.ghcr-auth = {
