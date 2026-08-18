@@ -16,7 +16,6 @@
               name = "contest-repo";
               mountPath = "/app/repo";
             }];
-            env.GIT_PUSH.value = "1";
             envFrom = [
               { secretRef.name = "webview"; }
               { configMapRef.name = "webview"; }
@@ -46,6 +45,7 @@
 
     v1.ConfigMap.webview.data = {
       GIT_REPO_URL = "https://github.com/berkeleymt/bmmt-2026.git";
+      GIT_PUSH = "1";
     };
 
     v1.Secret.webview.stringData = {
