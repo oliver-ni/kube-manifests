@@ -51,7 +51,9 @@
     v1.Secret.webview.stringData = {
       WEBVIEW_PASSWORD = "";
       SECRET_KEY = "";
-      GIT_TOKEN = "";
+      GITHUB_APP_ID = "";
+      GITHUB_APP_PRIVATE_KEY = "";
+      GITHUB_APP_INSTALLATION_ID = "";
       DISCORD_CLIENT_SECRET = "";
       DISCORD_BOT_TOKEN = "";
     };
