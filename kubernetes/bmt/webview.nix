@@ -2,8 +2,6 @@
 
 {
   namespaces.bmt-webview.resources = {
-    # StatefulSet (not Deployment) so the old pod is fully gone before a
-    # replacement starts — the contest repo PVC is RWO.
     "apps/v1".StatefulSet.webview.spec = {
       replicas = 1;
       serviceName = "webview";
