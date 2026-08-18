@@ -2,10 +2,11 @@
 
 {
   namespaces.bmt-webview.resources = {
-    "apps/v1".Deployment.webview.spec = {
+    # StatefulSet (not Deployment) so the old pod is fully gone before a
+    # replacement starts — the contest repo PVC is RWO.
+    "apps/v1".StatefulSet.webview.spec = {
       replicas = 1;
-      # The contest repo PVC is RWO; don't try to start a second pod against it.
-      strategy.type = "Recreate";
+      serviceName = "webview";
       selector.matchLabels.app = "webview";
       template = {
         metadata.labels.app = "webview";
