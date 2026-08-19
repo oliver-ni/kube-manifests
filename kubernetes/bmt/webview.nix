@@ -44,7 +44,7 @@
     };
 
     v1.ConfigMap.webview.data = {
-      GIT_REPO_URL = "https://github.com/berkeleymt/bmmt-2026.git";
+      GIT_REPO_URL = "https://github.com/berkeleymt/bmt-2026.git";
       GIT_PUSH = "1";
     };
 
