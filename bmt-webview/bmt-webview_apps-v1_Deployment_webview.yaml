@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: webview
   namespace: bmt-webview
@@ -8,7 +8,6 @@ spec:
   selector:
     matchLabels:
       app: webview
-  serviceName: webview
   template:
     metadata:
       labels:
@@ -38,6 +37,5 @@ spec:
       securityContext:
         fsGroup: 1000
       volumes:
-      - name: contest-repo
-        persistentVolumeClaim:
-          claimName: contest-repo
+      - emptyDir: {}
+        name: contest-repo
