@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: webview-ingress
+  namespace: bmt-webview
+spec:
+  rules:
+  - host: webview.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: webview
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - webview.berkeley.mt
+    secretName: webview-ingress-tls

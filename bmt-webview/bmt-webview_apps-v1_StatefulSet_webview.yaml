@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: webview
+  namespace: bmt-webview
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webview
+  serviceName: webview
+  template:
+    metadata:
+      labels:
+        app: webview
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: webview
+        - configMapRef:
+            name: webview
+        image: ghcr.io/atomicgrader/webview:latest
+        name: webview
+        ports:
+        - containerPort: 3100
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /app/repo
+          name: contest-repo
+      imagePullSecrets:
+      - name: ghcr-auth
+      securityContext:
+        fsGroup: 1000
+      volumes:
+      - name: contest-repo
+        persistentVolumeClaim:
+          claimName: contest-repo
