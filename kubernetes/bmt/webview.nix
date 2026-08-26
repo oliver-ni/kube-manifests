@@ -2,9 +2,8 @@
 
 {
   namespaces.bmt-webview.resources = {
-    "apps/v1".StatefulSet.webview.spec = {
+    "apps/v1".Deployment.webview.spec = {
       replicas = 1;
-      serviceName = "webview";
       selector.matchLabels.app = "webview";
       template = {
         metadata.labels.app = "webview";
@@ -25,22 +24,16 @@
               requests = { cpu = "200m"; memory = "256Mi"; };
             };
           };
-          volumes.contest-repo = {
-            persistentVolumeClaim.claimName = "contest-repo";
-          };
-          # The image runs as uid/gid 1000; make the PVC writable so the
+          # The entrypoint re-clones GIT_REPO_URL on every fresh pod, so the
+          # checkout (and the PDFs `make` builds into it) doesn't need to
+          # survive restarts.
+          volumes.contest-repo.emptyDir = { };
+          # The image runs as uid/gid 1000; make the volume writable so the
           # entrypoint can clone into it.
           securityContext.fsGroup = 1000;
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };
-    };
-
-    # Holds the contest repo clone and the PDFs `make` builds into it; the
-    # entrypoint clones GIT_REPO_URL here on first start and reuses it after.
-    v1.PersistentVolumeClaim.contest-repo.spec = {
-      accessModes = [ "ReadWriteOnce" ];
-      resources.requests.storage = "8Gi";
     };
 
     v1.ConfigMap.webview.data = {
