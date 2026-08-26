@@ -15,6 +15,10 @@
             volumeMounts = [{
               name = "contest-repo";
               mountPath = "/app/repo";
+              # Mount a subdirectory so the container doesn't see the ext4
+              # volume root's lost+found, which the entrypoint's
+              # empty-checkout check would reject.
+              subPath = "repo";
             }];
             envFrom = [
               { secretRef.name = "webview"; }
