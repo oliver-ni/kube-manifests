@@ -49,7 +49,7 @@
       DISCORD_CLIENT_ID = "1108551511233011764";
       DISCORD_GUILD_ID = "786701065856221205";
       DISCORD_REQUIRED_ROLE_IDS = "1532248559892566016";
-      DISCORD_REDIRECT_URI = "https://webview.berkeley.mt/api/auth/discord/callback";
+      DISCORD_REDIRECT_URI = "https://pw.berkeley.mt/api/auth/discord/callback";
     };
 
     v1.Secret.webview.stringData = {
@@ -79,7 +79,7 @@
       metadata.annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
       spec = {
         rules = [{
-          host = "webview.berkeley.mt";
+          host = "pw.berkeley.mt";
           http.paths = [{
             path = "/";
             pathType = "Prefix";
@@ -87,7 +87,7 @@
           }];
         }];
         tls = [{
-          hosts = [ "webview.berkeley.mt" ];
+          hosts = [ "pw.berkeley.mt" ];
           secretName = "webview-ingress-tls";
         }];
       };
