@@ -46,6 +46,10 @@
     v1.ConfigMap.webview.data = {
       GIT_REPO_URL = "https://github.com/berkeleymt/bmt-2026.git";
       GIT_PUSH = "1";
+      DISCORD_CLIENT_ID = "1108551511233011764";
+      DISCORD_GUILD_ID = "786701065856221205";
+      DISCORD_REQUIRED_ROLE_IDS = "1532248559892566016";
+      DISCORD_REDIRECT_URI = "https://webview.berkeley.mt/api/auth/discord/callback";
     };
 
     v1.Secret.webview.stringData = {
