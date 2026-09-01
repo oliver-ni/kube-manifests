@@ -39,6 +39,8 @@ spec:
           name: jirav-data
       imagePullSecrets:
       - name: ghcr-auth
+      securityContext:
+        fsGroup: 1000
       volumes:
       - name: jirav-data
         persistentVolumeClaim:
