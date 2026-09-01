@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jirav
+  namespace: bmt-jirav
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jirav
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jirav
+    spec:
+      containers:
+      - env:
+        - name: DATA_DIR
+          value: /data
+        - name: HOST
+          value: '::'
+        envFrom:
+        - secretRef:
+            name: jirav
+        image: ghcr.io/berkeleymt/jirav:latest
+        name: jirav
+        ports:
+        - containerPort: 3001
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /data
+          name: jirav-data
+      imagePullSecrets:
+      - name: ghcr-auth
+      volumes:
+      - name: jirav-data
+        persistentVolumeClaim:
+          claimName: jirav-data

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: jirav-ingress
+  namespace: bmt-jirav
+spec:
+  rules:
+  - host: jirav.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: jirav
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - jirav.berkeley.mt
+    secretName: jirav-ingress-tls
