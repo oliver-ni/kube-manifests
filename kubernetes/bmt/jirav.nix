@@ -29,6 +29,9 @@
           volumes.jirav-data = {
             persistentVolumeClaim.claimName = "jirav-data";
           };
+          # The image runs as the `node` user (uid/gid 1000); make the PVC
+          # writable so it can create the SQLite database.
+          securityContext.fsGroup = 1000;
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
       };
