@@ -31,4 +31,12 @@ in
     "rbac.authorization.k8s.io/v1".RoleBinding.landrew = roleBinding "landrew" "admin";
     "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
   };
+
+  namespaces.bmt-webview.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
+
+  namespaces.bmt-jirav.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
 }
