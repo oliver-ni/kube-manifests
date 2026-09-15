@@ -23,10 +23,10 @@
               limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "256Mi"; };
             };
-            # Unauthenticated, no git work; only answers once uvicorn is up,
-            # i.e. after the entrypoint's clone and the startup mirror/fetch.
+            # Only answers once uvicorn is up, i.e. after the entrypoint's
+            # clone and the startup mirror/fetch.
             readinessProbe = {
-              httpGet = { path = "/api/auth/methods"; port = 3100; };
+              httpGet = { path = "/api/health"; port = 3100; };
               periodSeconds = 10;
             };
           };
