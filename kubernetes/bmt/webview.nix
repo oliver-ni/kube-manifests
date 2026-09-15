@@ -23,6 +23,12 @@
               limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "256Mi"; };
             };
+            # Only answers once uvicorn is up, i.e. after the entrypoint's
+            # clone and the startup mirror/fetch.
+            readinessProbe = {
+              httpGet = { path = "/api/health"; port = 3100; };
+              periodSeconds = 10;
+            };
           };
           # The entrypoint re-clones GIT_REPO_URL on every fresh pod, so the
           # checkout (and the PDFs `make` builds into it) doesn't need to
