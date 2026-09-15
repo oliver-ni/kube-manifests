@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789266131,
-        "narHash": "sha256-kIU1/PGblIjKoAalveOV3lycvfdw/XA0Qq400GJaQZA=",
+        "lastModified": 1789457730,
+        "narHash": "sha256-PO1tYLAN0w1pfEI3ySuy7RMmrH+tNTrXY7q5vpLK42Q=",
         "owner": "oliver-ni",
         "repo": "afd-icon",
-        "rev": "2dda4382eb9bc4ceaf59841a1346da34e5aac19a",
+        "rev": "afcdadc70254d759c16796d075ac583f6acc8a42",
         "type": "github"
       },
       "original": {
