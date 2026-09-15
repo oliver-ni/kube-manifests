@@ -23,6 +23,11 @@ spec:
         name: webview
         ports:
         - containerPort: 3100
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3100
+          periodSeconds: 10
         resources:
           limits:
             memory: 4Gi
