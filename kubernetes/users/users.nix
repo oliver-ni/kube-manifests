@@ -39,4 +39,8 @@ in
   namespaces.bmt-jirav.resources = {
     "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
   };
+
+  namespaces.toraora.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
 }
