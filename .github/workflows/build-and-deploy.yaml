@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  repository_dispatch:
+    types:
+      - update-input
 
 concurrency:
   group: ${{ github.workflow }}
@@ -11,6 +14,7 @@ concurrency:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
   build:
@@ -24,6 +28,21 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@v6
       - name: Check Nix flake inputs
         uses: DeterminateSystems/flake-checker-action@v7
+
+      - name: Update flake input
+        if: github.event_name == 'repository_dispatch'
+        env:
+          INPUT: ${{ github.event.client_payload.input }}
+        run: |
+          nix flake update "$INPUT"
+          git diff --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "flake.lock: update $INPUT" flake.lock
+          git push
+
+      - name: Push container images
+        run: nix run .#kubernetes.pushImages -- --dest-creds "${{ github.actor }}:${{ secrets.GHCR_TOKEN }}"
 
       - name: Build Kubernetes cluster
         run: nix build .#kubernetes
@@ -59,7 +78,10 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const commits = JSON.parse(process.env.COMMITS);
+            const commits = JSON.parse(process.env.COMMITS) ?? [];
+            if (commits.length == 0) {
+              return `[rebuild] flake.lock: update ${context.payload.client_payload.input}`;
+            }
             const lines = [];
             for (const commit of commits) {
               lines.push(`${commit.id.substring(0, 7)} ${commit.message.split("\n")[0]}`);
