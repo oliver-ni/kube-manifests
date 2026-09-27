@@ -1,7 +1,7 @@
 { ... }:
 
 let
-  host = "auth.berkeley.mt";
+  host = "id.berkeley.mt";
 in
 {
   namespaces.bmt-auth.resources = {
@@ -27,10 +27,6 @@ in
                 readOnly = true;
               }
             ];
-            env = {
-              PG_USER.valueFrom.secretKeyRef = { name = "postgres-app"; key = "username"; };
-              PG_PASSWORD.valueFrom.secretKeyRef = { name = "postgres-app"; key = "password"; };
-            };
             envFrom = [{ secretRef.name = "rauthy"; }];
             readinessProbe = {
               httpGet = { path = "/ready"; port = 8200; };
@@ -72,12 +68,6 @@ in
       resources.requests.storage = "1Gi";
     };
 
-    "postgresql.cnpg.io/v1".Cluster.postgres.spec = {
-      instances = 1;
-      bootstrap.initdb.database = "rauthy";
-      storage.size = "2Gi";
-    };
-
     v1.Service.rauthy.spec = {
       selector.app = "rauthy";
       ports = [{
@@ -86,22 +76,14 @@ in
       }];
     };
 
-    # Non-sensitive config. Secrets are injected via env vars from the
-    # `rauthy` and `postgres-app` Secrets, which override the matching
-    # config.toml keys.
+    # Non-sensitive config; secrets come from the `rauthy` Secret as env
+    # vars, which override the matching config.toml keys.
     v1.ConfigMap.rauthy.data."config.toml" = ''
       [cluster]
       node_id = 1
       nodes = ["1 localhost:8100 localhost:8200"]
-      log_sync = "immediate"
-
-      [database]
-      hiqlite = false
-      pg_host = "postgres-rw"
-      pg_db_name = "rauthy"
 
       [email]
-      sub_prefix = "BMT Auth"
       smtp_url = "smtp.resend.com"
       smtp_username = "resend"
       smtp_from = "BMT Auth <noreply@berkeley.mt>"
@@ -116,11 +98,10 @@ in
       [webauthn]
       rp_id = "${host}"
       rp_origin = "https://${host}:443"
-      rp_name = "BMT Auth"
     '';
 
     v1.Secret.rauthy.stringData = {
-      # Hiqlite cache layer (single node, but still required)
+      # Hiqlite (single node, but still required)
       HQL_SECRET_RAFT = "";
       HQL_SECRET_API = "";
       # `openssl rand -hex 4`  ->  key id
