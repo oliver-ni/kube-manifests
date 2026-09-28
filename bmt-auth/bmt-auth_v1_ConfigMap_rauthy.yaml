@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  config.toml: |
+    [cluster]
+    node_id = 1
+    nodes = ["1 localhost:8100 localhost:8200"]
+
+    [email]
+    smtp_url = "smtp.resend.com"
+    smtp_username = "resend"
+    smtp_from = "BMT Auth <noreply@berkeley.mt>"
+
+    [server]
+    scheme = "http"
+    pub_url = "id.berkeley.mt"
+    proxy_mode = true
+    trusted_proxies = ["2606:c2c0:5:1::/64"]
+    http_workers = 2
+
+    [webauthn]
+    rp_id = "id.berkeley.mt"
+    rp_origin = "https://id.berkeley.mt:443"
+kind: ConfigMap
+metadata:
+  name: rauthy
+  namespace: bmt-auth

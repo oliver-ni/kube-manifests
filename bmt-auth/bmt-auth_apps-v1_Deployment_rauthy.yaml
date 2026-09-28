@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rauthy
+  namespace: bmt-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rauthy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rauthy
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: rauthy
+        image: ghcr.io/sebadob/rauthy:0.36.2
+        livenessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /auth/v1/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        name: rauthy
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /ready
+            port: 8200
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /app/data
+          name: rauthy-data
+        - mountPath: /app/config.toml
+          name: rauthy-config
+          readOnly: true
+          subPath: config.toml
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      volumes:
+      - configMap:
+          name: rauthy
+        name: rauthy-config
+      - name: rauthy-data
+        persistentVolumeClaim:
+          claimName: rauthy-data
