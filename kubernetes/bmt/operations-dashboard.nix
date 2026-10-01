@@ -42,19 +42,16 @@
       }];
     };
 
-    v1.Service.ops-dashboard-postgres-lb = {
-      metadata.annotations."metallb.universe.tf/loadBalancerIPs" = "2606:c2c0:5:1:3::a";
-      spec = {
-        type = "LoadBalancer";
-        selector = {
-          "cnpg.io/cluster" = "ops-dashboard-postgres";
-          role = "primary";
-        };
-        ports = [{
-          port = 5432;
-          targetPort = 5432;
-        }];
+    v1.Service.ops-dashboard-postgres-lb.spec = {
+      type = "LoadBalancer";
+      selector = {
+        "cnpg.io/cluster" = "ops-dashboard-postgres";
+        role = "primary";
       };
+      ports = [{
+        port = 5432;
+        targetPort = 5432;
+      }];
     };
 
     "cilium.io/v2".CiliumNetworkPolicy.allow-ingress-to-postgres.spec = {
