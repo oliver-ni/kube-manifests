@@ -1,0 +1,12 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-ingress-to-postgres
+  namespace: bmt-ops-dashboard
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: ops-dashboard-postgres
+  ingress:
+  - fromEntities:
+    - all
