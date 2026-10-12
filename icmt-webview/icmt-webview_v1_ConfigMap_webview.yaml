@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  DISCORD_CLIENT_ID: ''
+  DISCORD_GUILD_ID: ''
+  DISCORD_REDIRECT_URI: https://pw.ic.mt/api/auth/discord/callback
+  DISCORD_REQUIRED_ROLE_IDS: ''
+  GIT_PUSH: '1'
+  GIT_REPO_URL: https://github.com/icmtg/icmt-2027.git
+kind: ConfigMap
+metadata:
+  name: webview
+  namespace: icmt-webview

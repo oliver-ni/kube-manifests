@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webview
+  namespace: icmt-webview
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webview
+  template:
+    metadata:
+      labels:
+        app: webview
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: webview
+        - configMapRef:
+            name: webview
+        image: ghcr.io/atomicgrader/webview:latest
+        name: webview
+        ports:
+        - containerPort: 3100
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3100
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: 4Gi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /app/repo
+          name: contest-repo
+      imagePullSecrets:
+      - name: ghcr-auth
+      securityContext:
+        fsGroup: 1000
+      volumes:
+      - emptyDir: {}
+        name: contest-repo
