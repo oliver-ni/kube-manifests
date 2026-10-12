@@ -45,9 +45,9 @@
     v1.ConfigMap.webview.data = {
       GIT_REPO_URL = "https://github.com/icmtg/icmt-2027.git";
       GIT_PUSH = "1";
-      DISCORD_CLIENT_ID = "";
-      DISCORD_GUILD_ID = "";
-      DISCORD_REQUIRED_ROLE_IDS = "";
+      DISCORD_CLIENT_ID = "1480062409807892661";
+      DISCORD_GUILD_ID = "1303144097283833907";
+      DISCORD_REQUIRED_ROLE_IDS = "1559215304163336232,1559215347444219924";
       DISCORD_REDIRECT_URI = "https://pw.ic.mt/api/auth/discord/callback";
     };
 
