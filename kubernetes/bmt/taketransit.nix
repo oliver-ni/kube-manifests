@@ -33,7 +33,7 @@
       metadata.annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
       spec = {
         rules = [{
-          host = "transit.berkeley.mt";
+          host = "taketransit.berkeley.mt";
           http.paths = [{
             path = "/";
             pathType = "Prefix";
@@ -44,7 +44,7 @@
           }];
         }];
         tls = [{
-          hosts = [ "transit.berkeley.mt" ];
+          hosts = [ "taketransit.berkeley.mt" ];
           secretName = "taketransit-ingress-tls";
         }];
       };
