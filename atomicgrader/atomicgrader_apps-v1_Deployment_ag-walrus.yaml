@@ -16,7 +16,7 @@ spec:
       containers:
       - env:
         - name: GRAPHQL_URL
-          value: https://ag.poketwo.io/graphql
+          value: http://ag-otter/graphql
         image: ghcr.io/atomicgrader/walrus:latest
         name: walrus
         ports:
