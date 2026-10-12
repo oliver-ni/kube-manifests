@@ -15,7 +15,7 @@
               limits = { memory = "4Gi"; cpu = "500m"; };
               requests = { memory = "1Gi"; cpu = "50m"; };
             };
-            env.GRAPHQL_URL.value = "https://ag.poketwo.io/graphql";
+            env.GRAPHQL_URL.value = "http://ag-otter/graphql";
           };
           imagePullSecrets = [{ name = "ghcr-auth"; }];
         };
