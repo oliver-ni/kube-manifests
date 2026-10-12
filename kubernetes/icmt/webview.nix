@@ -48,7 +48,7 @@
       DISCORD_CLIENT_ID = "";
       DISCORD_GUILD_ID = "";
       DISCORD_REQUIRED_ROLE_IDS = "";
-      DISCORD_REDIRECT_URI = "https://TODO-ICMT-HOSTNAME/api/auth/discord/callback";
+      DISCORD_REDIRECT_URI = "https://pw.ic.mt/api/auth/discord/callback";
     };
 
     v1.Secret.webview.stringData = {
@@ -78,7 +78,7 @@
       metadata.annotations."cert-manager.io/cluster-issuer" = "letsencrypt";
       spec = {
         rules = [{
-          host = "TODO-ICMT-HOSTNAME";
+          host = "pw.ic.mt";
           http.paths = [{
             path = "/";
             pathType = "Prefix";
@@ -86,7 +86,7 @@
           }];
         }];
         tls = [{
-          hosts = [ "TODO-ICMT-HOSTNAME" ];
+          hosts = [ "pw.ic.mt" ];
           secretName = "webview-ingress-tls";
         }];
       };
