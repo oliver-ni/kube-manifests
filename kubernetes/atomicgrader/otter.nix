@@ -32,9 +32,9 @@ in
       DJANGO_ADMIN_EMAIL = "oliver.ni@gmail.com";
       DJANGO_SERVER_EMAIL = "oliver.ni@gmail.com";
       DJANGO_DEFAULT_FROM_EMAIL = "oliver.ni@gmail.com";
-      DJANGO_ALLOWED_HOSTS = "localhost,127.0.0.1,ag.poketwo.io,ag-otter";
-      DJANGO_CSRF_TRUSTED_ORIGINS = "https://ag.poketwo.io";
-      DJANGO_FRONTEND_BASE_URL = "https://ag.poketwo.io";
+      DJANGO_ALLOWED_HOSTS = "localhost,127.0.0.1,atomicgrader.com,ag-otter";
+      DJANGO_CSRF_TRUSTED_ORIGINS = "https://atomicgrader.com";
+      DJANGO_FRONTEND_BASE_URL = "https://atomicgrader.com";
       EMAIL_URL = "smtp+tls://atomicgrader@gmail.com:PASSWORDHERE@smtp.gmail.com:587";
     };
 
