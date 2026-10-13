@@ -8,7 +8,7 @@ metadata:
   namespace: atomicgrader
 spec:
   rules:
-  - host: ag.poketwo.io
+  - host: atomicgrader.com
     http:
       paths:
       - backend:
@@ -69,5 +69,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - ag.poketwo.io
+    - atomicgrader.com
     secretName: ag-ingress-tls

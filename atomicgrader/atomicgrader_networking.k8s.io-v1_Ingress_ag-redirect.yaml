@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/permanent-redirect: https://atomicgrader.com$request_uri
+  name: ag-redirect
+  namespace: atomicgrader
+spec:
+  rules:
+  - host: ag.poketwo.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: ag-walrus
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: www.atomicgrader.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: ag-walrus
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - ag.poketwo.io
+    - www.atomicgrader.com
+    secretName: ag-redirect-tls
