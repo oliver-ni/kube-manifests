@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 let
   roleBinding = saName: roleName: {
@@ -13,38 +13,41 @@ let
       apiGroup = "rbac.authorization.k8s.io";
     };
   };
+
+  adminIn = saName: namespaces: lib.genAttrs namespaces (_: {
+    resources."rbac.authorization.k8s.io/v1".RoleBinding.${saName} = roleBinding saName "admin";
+  });
+
+  bmtNamespaces = [
+    "bmt"
+    "bmt-auth"
+    "bmt-contestdojo-verifier-bot"
+    "bmt-discord-bot"
+    "bmt-guts-scoreboard"
+    "bmt-jirav"
+    "bmt-ops-dashboard"
+    "bmt-outline"
+    "bmt-stickers"
+    "bmt-vaultwarden"
+    "bmt-webview"
+  ];
 in
 {
-  namespaces.users.resources = {
-    v1.ServiceAccount.landrew = { };
-    v1.ServiceAccount.toraora = { };
+  namespaces = lib.mkMerge [
+    {
+      users.resources = {
+        v1.ServiceAccount.iancheung = { };
+        v1.ServiceAccount.landrew = { };
+        v1.ServiceAccount.toraora = { };
 
-    "rbac.authorization.k8s.io/v1".ClusterRoleBinding.landrew = roleBinding "landrew" "view";
-    "rbac.authorization.k8s.io/v1".ClusterRoleBinding.toraora = roleBinding "toraora" "view";
-  };
+        "rbac.authorization.k8s.io/v1".ClusterRoleBinding.iancheung = roleBinding "iancheung" "view";
+        "rbac.authorization.k8s.io/v1".ClusterRoleBinding.landrew = roleBinding "landrew" "view";
+        "rbac.authorization.k8s.io/v1".ClusterRoleBinding.toraora = roleBinding "toraora" "view";
+      };
+    }
 
-  namespaces.bmt.resources = {
-    "rbac.authorization.k8s.io/v1".RoleBinding.landrew = roleBinding "landrew" "admin";
-  };
-
-  namespaces.atomicgrader.resources = {
-    "rbac.authorization.k8s.io/v1".RoleBinding.landrew = roleBinding "landrew" "admin";
-    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
-  };
-
-  namespaces.bmt-webview.resources = {
-    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
-  };
-
-  namespaces.bmt-jirav.resources = {
-    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
-  };
-
-  namespaces.icmt-webview.resources = {
-    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
-  };
-
-  namespaces.toraora.resources = {
-    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
-  };
+    (adminIn "iancheung" bmtNamespaces)
+    (adminIn "landrew" [ "atomicgrader" "bmt" ])
+    (adminIn "toraora" [ "atomicgrader" "bmt-jirav" "bmt-webview" "icmt-webview" "toraora" ])
+  ];
 }
