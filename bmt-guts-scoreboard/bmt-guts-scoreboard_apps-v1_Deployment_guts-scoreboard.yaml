@@ -30,9 +30,11 @@ spec:
         - name: DATABASE_URL
           value: postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard
         envFrom:
+        - configMapRef:
+            name: guts-scoreboard
         - secretRef:
             name: guts-scoreboard
-        image: ghcr.io/berkeleymt/guts-scoreboard:latest
+        image: ghcr.io/atomicgrader/guts-scoreboard:latest
         name: guts-scoreboard
         ports:
         - containerPort: 4887
