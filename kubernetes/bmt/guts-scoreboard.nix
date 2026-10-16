@@ -56,7 +56,7 @@
       DISCORD_CLIENT_ID = "1108551511233011764";
       DISCORD_GUILD_ID = "786701065856221205";
       # Role granting /site plus admin on every contest.
-      DISCORD_SITE_ADMIN_ROLE_ID = "";
+      DISCORD_SITE_ADMIN_ROLE_ID = "1560547774196355072";
     };
 
     v1.Secret.guts-scoreboard.stringData = {
