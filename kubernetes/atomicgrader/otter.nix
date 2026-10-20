@@ -42,6 +42,7 @@ in
       DJANGO_SECRET_KEY = "";
       DJANGO_JWT_SIGNING_KEY = "";
       GEMINI_API_KEY = "";
+      TYPESAFE_API_KEY = "";
     };
 
     "apps/v1".Deployment.ag-otter.spec = {
