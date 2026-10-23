@@ -43,6 +43,11 @@ in
         global.imageRegistry = "docker.io";
         global.security.allowInsecureImages = true;
 
+        # Password comes from Vault; without this the chart renders a random one
+        # every build, changing checksum/secret and restarting redis on every deploy.
+        auth.existingSecret = "redis";
+        auth.existingSecretPasswordKey = "redis-password";
+
         architecture = "standalone";
         master.persistence.size = "1Gi";
         metrics.enabled = true;
@@ -108,6 +113,8 @@ in
       selector = { app = "outline"; };
       ports = [{ port = 80; targetPort = 3000; }];
     };
+
+    resources.v1.Secret.redis.stringData."redis-password" = "";
 
     resources.v1.Secret.outline.stringData = {
       SECRET_KEY = "";
