@@ -18,6 +18,8 @@
         spec = {
           containers.devin-discord = {
             image = "ghcr.io/oliver-ni/devin-discord-integration:main";
+            # `:main` is a moving tag; without this a restart reuses the node's cached image.
+            imagePullPolicy = "Always";
             ports = [{ containerPort = 8080; }];
             env.DATABASE_URL.valueFrom.secretKeyRef = { name = "devin-discord-postgres-app"; key = "uri"; };
             envFrom = [
