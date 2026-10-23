@@ -28,6 +28,7 @@ spec:
         - configMapRef:
             name: devin-discord
         image: ghcr.io/oliver-ni/devin-discord-integration:main
+        imagePullPolicy: Always
         livenessProbe:
           httpGet:
             path: /livez
