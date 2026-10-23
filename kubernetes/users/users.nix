@@ -47,6 +47,10 @@ in
     "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
   };
 
+  namespaces.devin-discord.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
+
   namespaces.icmt-webview.resources = {
     "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
   };
