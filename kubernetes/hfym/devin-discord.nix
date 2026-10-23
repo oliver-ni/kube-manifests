@@ -34,7 +34,7 @@
 
     v1.ConfigMap.devin-discord.data = {
       PUBLIC_URL = "https://devin-discord.poketwo.io";
-      DISCORD_APPLICATION_ID = "";
+      DISCORD_APPLICATION_ID = "1487495269959471196";
       RUST_LOG = "info";
     };
 
