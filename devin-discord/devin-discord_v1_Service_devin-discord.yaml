@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devin-discord
+  namespace: devin-discord
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: devin-discord

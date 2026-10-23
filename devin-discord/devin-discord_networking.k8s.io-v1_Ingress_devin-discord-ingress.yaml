@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: devin-discord-ingress
+  namespace: devin-discord
+spec:
+  rules:
+  - host: devin-discord.poketwo.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: devin-discord
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - devin-discord.poketwo.io
+    secretName: devin-discord-ingress-tls

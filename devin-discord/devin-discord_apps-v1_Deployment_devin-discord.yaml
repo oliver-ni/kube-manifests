@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devin-discord
+  namespace: devin-discord
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devin-discord
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: devin-discord
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              key: uri
+              name: devin-discord-postgres-app
+        envFrom:
+        - secretRef:
+            name: devin-discord
+        - configMapRef:
+            name: devin-discord
+        image: ghcr.io/oliver-ni/devin-discord-integration:main
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: 8080
+        name: devin-discord
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+      imagePullSecrets:
+      - name: ghcr-auth
