@@ -13,43 +13,30 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v11
-      - name: Setup Nix build cache
-        uses: DeterminateSystems/magic-nix-cache-action@v6
       - name: Check Nix flake inputs
         uses: DeterminateSystems/flake-checker-action@v7
 
       - name: Build Kubernetes cluster
         run: nix build .#kubernetes
 
-      - name: Upload cluster artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cluster
-          path: result/
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Checkout cluster branch
         uses: actions/checkout@v4
         with:
           ref: cluster
+          path: cluster
 
-      - name: Remove old files
-        run: git rm -r . || true
-
-      - name: Download cluster artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: cluster
+      - name: Replace files with build output
+        working-directory: cluster
+        run: |
+          git rm -rq . || true
+          cp -rL ../result/. .
 
       - name: Create commit message
         id: commit-msg
@@ -71,6 +58,7 @@ jobs:
             return `[rebuild] ${lines.length} commits\n\n${body}`;
 
       - name: Commit and push
+        working-directory: cluster
         env:
           COMMIT_MSG: ${{ steps.commit-msg.outputs.result }}
         run: |
