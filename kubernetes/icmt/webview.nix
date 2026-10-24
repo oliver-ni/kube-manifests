@@ -45,6 +45,11 @@
     v1.ConfigMap.webview.data = {
       GIT_REPO_URL = "https://github.com/icmtg/icmt-2027.git";
       GIT_PUSH = "1";
+      # Device fingerprinting through the shared TR collector (see the webview README).
+      TR_COLLECTOR_URL = "https://tr.tora.dev";
+      TR_SITE_ID = "pw.ic.mt";
+      # pw.* sits behind Cloudflare, which overwrites this header.
+      TR_CLIENT_IP_HEADERS = "cf-connecting-ip";
       DISCORD_CLIENT_ID = "1480062409807892661";
       DISCORD_GUILD_ID = "1303144097283833907";
       DISCORD_REQUIRED_ROLE_IDS = "1559215304163336232,1559215347444219924";
