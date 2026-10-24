@@ -6,6 +6,9 @@ data:
   DISCORD_REQUIRED_ROLE_IDS: '1532248559892566016'
   GIT_PUSH: '1'
   GIT_REPO_URL: https://github.com/berkeleymt/bmt-2026.git
+  TR_CLIENT_IP_HEADERS: cf-connecting-ip
+  TR_COLLECTOR_URL: https://tr.tora.dev
+  TR_SITE_ID: pw.berkeley.mt
 kind: ConfigMap
 metadata:
   name: webview
