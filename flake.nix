@@ -4,9 +4,12 @@
     systems.url = "github:nix-systems/default";
     transpire.url = "github:oliver-ni/transpire";
     transpire.inputs.nixpkgs.follows = "nixpkgs";
+
+    afd-icon.url = "github:oliver-ni/afd-icon";
+    afd-icon.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, systems, transpire, ... }:
+  outputs = { nixpkgs, systems, transpire, ... }@inputs:
     let
       # =======================
       # Transpire Configuration
@@ -24,6 +27,7 @@
           (fs.difference ./kubernetes ./kubernetes/+extras));
 
       openApiSpec = ./kube-openapi.json;
+      specialArgs = { inherit inputs; };
 
       # =====================
       # nixpkgs Configuration
@@ -41,7 +45,7 @@
     {
       packages = forAllSystems (system: pkgs: {
         kubernetes = transpire.lib.${system}.build.cluster {
-          inherit openApiSpec;
+          inherit openApiSpec specialArgs;
           modules = kubernetesModules ++ kubernetesExtraModules;
         };
 
@@ -52,7 +56,7 @@
           (builtins.filter
             (obj: obj.apiVersion == "v1" && obj.kind == "Secret")
             (transpire.lib.${system}.evalModules {
-              inherit openApiSpec;
+              inherit openApiSpec specialArgs;
               modules = kubernetesModules;
             }).config.build.objects);
       });
