@@ -83,11 +83,6 @@ in
       node_id = 1
       nodes = ["1 localhost:8100 localhost:8200"]
 
-      [email]
-      smtp_url = "smtp.resend.com"
-      smtp_username = "resend"
-      smtp_from = "BMT Auth <noreply@berkeley.mt>"
-
       [server]
       scheme = "http"
       pub_url = "${host}"
@@ -109,8 +104,6 @@ in
       # ENC_KEYS = "<id>/<key>", ENC_KEY_ACTIVE = "<id>"
       ENC_KEYS = "";
       ENC_KEY_ACTIVE = "";
-      # Resend API key
-      SMTP_PASSWORD = "";
     };
 
     "networking.k8s.io/v1".Ingress.rauthy-ingress = {
