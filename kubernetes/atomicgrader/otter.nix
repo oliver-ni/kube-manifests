@@ -43,6 +43,8 @@ in
       DJANGO_JWT_SIGNING_KEY = "";
       GEMINI_API_KEY = "";
       TYPESAFE_API_KEY = "";
+      GOOGLE_OAUTH_CLIENT_ID = "";
+      GOOGLE_OAUTH_CLIENT_SECRET = "";
     };
 
     "apps/v1".Deployment.ag-otter.spec = {
