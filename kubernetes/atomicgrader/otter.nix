@@ -43,6 +43,7 @@ in
       DJANGO_JWT_SIGNING_KEY = "";
       GEMINI_API_KEY = "";
       TYPESAFE_API_KEY = "";
+      POSTMARK_API_TOKEN = "";
       GOOGLE_OAUTH_CLIENT_ID = "";
       GOOGLE_OAUTH_CLIENT_SECRET = "";
     };
