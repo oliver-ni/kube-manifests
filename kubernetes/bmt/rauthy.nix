@@ -2,6 +2,22 @@
 
 let
   host = "id.berkeley.mt";
+  config = ''
+    [cluster]
+    node_id = 1
+    nodes = ["1 localhost:8100 localhost:8200"]
+
+    [server]
+    scheme = "http"
+    pub_url = "${host}"
+    proxy_mode = true
+    trusted_proxies = ["2606:c2c0:5:1::/64"]
+    http_workers = 2
+
+    [webauthn]
+    rp_id = "${host}"
+    rp_origin = "https://${host}:443"
+  '';
 in
 {
   namespaces.bmt-auth.resources = {
@@ -11,6 +27,8 @@ in
       selector.matchLabels.app = "rauthy";
       template = {
         metadata.labels.app = "rauthy";
+        # config.toml is a subPath mount, which never sees ConfigMap updates.
+        metadata.annotations."checksum/config" = builtins.hashString "sha256" config;
         spec = {
           containers.rauthy = {
             image = "ghcr.io/sebadob/rauthy:0.36.2";
@@ -78,22 +96,7 @@ in
 
     # Non-sensitive config; secrets come from the `rauthy` Secret as env
     # vars, which override the matching config.toml keys.
-    v1.ConfigMap.rauthy.data."config.toml" = ''
-      [cluster]
-      node_id = 1
-      nodes = ["1 localhost:8100 localhost:8200"]
-
-      [server]
-      scheme = "http"
-      pub_url = "${host}"
-      proxy_mode = true
-      trusted_proxies = ["2606:c2c0:5:1::/64"]
-      http_workers = 2
-
-      [webauthn]
-      rp_id = "${host}"
-      rp_origin = "https://${host}:443"
-    '';
+    v1.ConfigMap.rauthy.data."config.toml" = config;
 
     v1.Secret.rauthy.stringData = {
       # Hiqlite (single node, but still required)
