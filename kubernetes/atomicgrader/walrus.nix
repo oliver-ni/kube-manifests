@@ -3,7 +3,7 @@
 {
   namespaces.atomicgrader.resources = {
     "apps/v1".Deployment.ag-walrus.spec = {
-      replicas = 1;
+      replicas = 2;
       selector.matchLabels.app = "ag-walrus";
       template = {
         metadata.labels.app = "ag-walrus";
@@ -12,7 +12,7 @@
             image = "ghcr.io/atomicgrader/walrus:latest";
             ports = [{ containerPort = 3000; }];
             resources = {
-              limits = { memory = "4Gi"; cpu = "500m"; };
+              limits = { memory = "4Gi"; cpu = "1"; };
               requests = { memory = "1Gi"; cpu = "50m"; };
             };
             env.GRAPHQL_URL.value = "http://ag-otter/graphql";
