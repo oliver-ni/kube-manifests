@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   namespaces.afd-icon.resources = {
@@ -8,7 +8,7 @@
       template = {
         metadata.labels.app = "afd-icon";
         spec.containers.afd-icon = {
-          image = "ghcr.io/oliver-ni/afd-icon:latest";
+          image = inputs.afd-icon.packages.x86_64-linux.image;
           ports = [{ containerPort = 8000; }];
           resources = {
             limits = { cpu = "500m"; memory = "4Gi"; };
