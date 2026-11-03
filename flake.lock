@@ -96,11 +96,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1793689322,
-        "narHash": "sha256-+cGqTOPFN+3fv/1eHgWT6jwmil+AU+H+3fW6+3o4CXo=",
+        "lastModified": 1793691546,
+        "narHash": "sha256-2tv74lbRgATuvaFduWjUEgIdkKXe2v4JEljIBn+2bD8=",
         "owner": "oliver-ni",
         "repo": "transpire",
-        "rev": "7bc4b53c807be2d6528e6a5aa329a7e595b77a38",
+        "rev": "b3b5584f85db8d9187c5561b6af83223112bae8f",
         "type": "github"
       },
       "original": {
