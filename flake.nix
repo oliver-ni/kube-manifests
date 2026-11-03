@@ -6,7 +6,6 @@
     transpire.inputs.nixpkgs.follows = "nixpkgs";
 
     afd-icon.url = "github:oliver-ni/afd-icon";
-    afd-icon.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, systems, transpire, ... }@inputs:
