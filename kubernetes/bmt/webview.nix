@@ -23,6 +23,12 @@
               limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "256Mi"; };
             };
+            # Only answers once uvicorn is up, i.e. after the entrypoint's
+            # clone and the startup mirror/fetch.
+            readinessProbe = {
+              httpGet = { path = "/api/health"; port = 3100; };
+              periodSeconds = 10;
+            };
           };
           # The entrypoint re-clones GIT_REPO_URL on every fresh pod, so the
           # checkout (and the PDFs `make` builds into it) doesn't need to
@@ -39,6 +45,11 @@
     v1.ConfigMap.webview.data = {
       GIT_REPO_URL = "https://github.com/berkeleymt/bmt-2026.git";
       GIT_PUSH = "1";
+      # Device fingerprinting through the shared TR collector (see the webview README).
+      TR_COLLECTOR_URL = "https://tr.tora.dev";
+      TR_SITE_ID = "pw.berkeley.mt";
+      # pw.* sits behind Cloudflare, which overwrites this header.
+      TR_CLIENT_IP_HEADERS = "cf-connecting-ip";
       DISCORD_CLIENT_ID = "1108551511233011764";
       DISCORD_GUILD_ID = "786701065856221205";
       DISCORD_REQUIRED_ROLE_IDS = "1532248559892566016";

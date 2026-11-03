@@ -15,7 +15,7 @@
         metadata.labels.app = "guts-scoreboard";
         spec = {
           containers.guts-scoreboard = {
-            image = "ghcr.io/berkeleymt/guts-scoreboard:latest";
+            image = "ghcr.io/atomicgrader/guts-scoreboard:latest";
             ports = [{ containerPort = 4887; }];
             env = {
               DB_USER.valueFrom.secretKeyRef = { name = "guts-scoreboard-postgres-app"; key = "username"; };
@@ -23,7 +23,10 @@
               DATABASE_URL.value = "postgres://$(DB_USER):$(DB_PASS)@guts-scoreboard-postgres-rw:5432/guts_scoreboard";
               RUST_LOG.value = "tower_http=trace";
             };
-            envFrom = [{ secretRef.name = "guts-scoreboard"; }];
+            envFrom = [
+              { configMapRef.name = "guts-scoreboard"; }
+              { secretRef.name = "guts-scoreboard"; }
+            ];
             resources = {
               limits = { memory = "4Gi"; };
               requests = { cpu = "200m"; memory = "64Mi"; };
@@ -47,9 +50,19 @@
       }];
     };
 
+    # Same Discord app as webview (see webview.nix); the server whose roles grant access.
+    v1.ConfigMap.guts-scoreboard.data = {
+      PUBLIC_URL = "https://guts.berkeley.mt";
+      DISCORD_CLIENT_ID = "1108551511233011764";
+      DISCORD_GUILD_ID = "786701065856221205";
+      # Role granting /site plus admin on every contest.
+      DISCORD_SITE_ADMIN_ROLE_ID = "1560547774196355072";
+    };
+
     v1.Secret.guts-scoreboard.stringData = {
-      SU_USER = "";
-      SU_PASS = "";
+      SESSION_SECRET = "";
+      DISCORD_CLIENT_SECRET = "";
+      DISCORD_BOT_TOKEN = "";
     };
 
     "networking.k8s.io/v1".Ingress.guts-scoreboard-ingress = {

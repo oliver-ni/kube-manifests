@@ -16,14 +16,17 @@ let
 in
 {
   namespaces.users.resources = {
+    v1.ServiceAccount.iancheung = { };
     v1.ServiceAccount.landrew = { };
     v1.ServiceAccount.toraora = { };
 
+    "rbac.authorization.k8s.io/v1".ClusterRoleBinding.iancheung = roleBinding "iancheung" "view";
     "rbac.authorization.k8s.io/v1".ClusterRoleBinding.landrew = roleBinding "landrew" "view";
     "rbac.authorization.k8s.io/v1".ClusterRoleBinding.toraora = roleBinding "toraora" "view";
   };
 
   namespaces.bmt.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.iancheung = roleBinding "iancheung" "admin";
     "rbac.authorization.k8s.io/v1".RoleBinding.landrew = roleBinding "landrew" "admin";
   };
 
@@ -37,6 +40,22 @@ in
   };
 
   namespaces.bmt-jirav.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
+
+  namespaces.bmt-guts-scoreboard.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
+
+  namespaces.devin-discord.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
+
+  namespaces.icmt-webview.resources = {
+    "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
+  };
+
+  namespaces.toraora.resources = {
     "rbac.authorization.k8s.io/v1".RoleBinding.toraora = roleBinding "toraora" "admin";
   };
 }
