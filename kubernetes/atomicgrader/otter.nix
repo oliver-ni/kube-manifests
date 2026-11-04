@@ -46,6 +46,12 @@ in
       POSTMARK_API_TOKEN = "";
       GOOGLE_OAUTH_CLIENT_ID = "";
       GOOGLE_OAUTH_CLIENT_SECRET = "";
+      WECHAT_APP_ID = "";
+      WECHAT_APP_SECRET = "";
+      DISCORD_OAUTH_CLIENT_ID = "";
+      DISCORD_OAUTH_CLIENT_SECRET = "";
+      DISCORD_WEBHOOK_URL = "";
+      BMT_FUNNY_ANSWERS_WEBHOOK_URL = "";
     };
 
     "apps/v1".Deployment.ag-otter.spec = {
