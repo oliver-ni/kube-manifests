@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volunteers
+  namespace: bmt-volunteers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: volunteers
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: volunteers
+    spec:
+      containers:
+      - env:
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: volunteers-postgres-app
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: volunteers-postgres-app
+        - name: DATABASE_URL
+          value: postgres://$(DB_USER):$(DB_PASS)@volunteers-postgres-rw:5432/volunteers
+        envFrom:
+        - secretRef:
+            name: volunteers
+        image: ghcr.io/oliver-ni/bmt-checkin:latest
+        imagePullPolicy: Always
+        name: volunteers
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      imagePullSecrets:
+      - name: ghcr-auth

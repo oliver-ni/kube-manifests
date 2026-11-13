@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: volunteers-postgres
+  namespace: bmt-volunteers
+spec:
+  bootstrap:
+    initdb:
+      database: volunteers
+  instances: 3
+  storage:
+    size: 8Gi
