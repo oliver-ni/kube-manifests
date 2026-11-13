@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  repository_dispatch:
+    types:
+      - update-apps
 
 concurrency:
   group: ${{ github.workflow }}
@@ -11,6 +14,7 @@ concurrency:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
   build-and-deploy:
@@ -18,13 +22,43 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v11
       - name: Check Nix flake inputs
         uses: DeterminateSystems/flake-checker-action@v7
 
+      # Every app input is updated, so a run that cancels an earlier one still
+      # picks up its update.
+      - name: Update app inputs
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          nix flake metadata --json |
+            jq -r '.locks.nodes.root.inputs | keys - ["nixpkgs", "systems", "transpire"] | .[]' |
+            xargs nix flake update
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push container images
+        run: nix run .#kubernetes.pushImages
+
       - name: Build Kubernetes cluster
         run: nix build .#kubernetes
+
+      - name: Commit flake.lock
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          git diff --quiet flake.lock && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "flake.lock: update apps" flake.lock
+          git push
 
       - name: Checkout cluster branch
         uses: actions/checkout@v4
@@ -46,7 +80,10 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const commits = JSON.parse(process.env.COMMITS);
+            const commits = JSON.parse(process.env.COMMITS) ?? [];
+            if (commits.length == 0) {
+              return "[rebuild] flake.lock: update apps";
+            }
             const lines = [];
             for (const commit of commits) {
               lines.push(`${commit.id.substring(0, 7)} ${commit.message.split("\n")[0]}`);
