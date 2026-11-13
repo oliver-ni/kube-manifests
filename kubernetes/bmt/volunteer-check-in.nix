@@ -17,7 +17,7 @@
         metadata.labels.app = "volunteers";
         spec = {
           containers.volunteers = {
-            image = "ghcr.io/oliver-ni/bmt-checkin:latest";
+            image = "ghcr.io/berkeleymt/volunteer-check-in:latest";
             imagePullPolicy = "Always";
             ports = [{ containerPort = 3000; }];
             env = {
