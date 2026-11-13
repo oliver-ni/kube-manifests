@@ -32,7 +32,7 @@ spec:
         envFrom:
         - secretRef:
             name: volunteers
-        image: ghcr.io/oliver-ni/bmt-checkin:latest
+        image: ghcr.io/berkeleymt/volunteer-check-in:latest
         imagePullPolicy: Always
         name: volunteers
         ports:
