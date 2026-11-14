@@ -53,6 +53,8 @@
     # Same Discord app as webview (see webview.nix); the server whose roles grant access.
     v1.ConfigMap.guts-scoreboard.data = {
       PUBLIC_URL = "https://guts.berkeley.mt";
+      # Contest that / redirects to.
+      DEFAULT_CONTEST = "bmt2026";
       DISCORD_CLIENT_ID = "1108551511233011764";
       DISCORD_GUILD_ID = "786701065856221205";
       # Role granting /site plus admin on every contest.
