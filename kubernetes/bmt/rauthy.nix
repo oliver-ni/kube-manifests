@@ -19,6 +19,9 @@ let
     trusted_proxies = ["2606:c2c0:5:1::/64"]
     http_workers = 2
 
+    [mfa]
+    admin_force_mfa = false
+
     [webauthn]
     rp_id = "${host}"
     rp_origin = "https://${host}:443"
