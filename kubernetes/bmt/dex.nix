@@ -37,7 +37,11 @@ let
     # One entry per app, with its secret as a key in the `dex` Secret:
     #   { id = "volunteers"; name = "Volunteers"; secretEnv = "VOLUNTEERS_CLIENT_SECRET";
     #     redirectURIs = [ "https://volunteers.berkeley.mt/auth/callback" ]; }
-    staticClients = [ ];
+    staticClients = [
+      # Temporary, for trying a login by hand. Public (no secret, PKCE), and Dex
+      # only lets a public client without redirectURIs return to http://localhost.
+      { id = "login-test"; name = "Login test"; public = true; }
+    ];
   };
 
   userinfo = builtins.readFile ./dex-discord-userinfo.py;
