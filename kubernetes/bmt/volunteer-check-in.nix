@@ -24,6 +24,7 @@
               DB_USER.valueFrom.secretKeyRef = { name = "volunteers-postgres-app"; key = "username"; };
               DB_PASS.valueFrom.secretKeyRef = { name = "volunteers-postgres-app"; key = "password"; };
               DATABASE_URL.value = "postgres://$(DB_USER):$(DB_PASS)@volunteers-postgres-rw:5432/volunteers";
+              PUBLIC_URL.value = "https://volunteers.berkeley.mt";
             };
             envFrom = [{ secretRef.name = "volunteers"; }];
             resources = {
@@ -43,6 +44,8 @@
 
     v1.Secret.volunteers.stringData = {
       ADMIN_PASSWORD = "";
+      GOOGLE_CLIENT_ID = "";
+      GOOGLE_CLIENT_SECRET = "";
     };
 
     v1.Service.volunteers.spec = {
