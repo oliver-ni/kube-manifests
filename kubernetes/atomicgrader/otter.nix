@@ -44,6 +44,7 @@ in
       GEMINI_API_KEY = "";
       TYPESAFE_API_KEY = "";
       OPENROUTER_API_KEY = "";
+      PPLX_API_KEY = "";
       POSTMARK_API_TOKEN = "";
       GOOGLE_OAUTH_CLIENT_ID = "";
       GOOGLE_OAUTH_CLIENT_SECRET = "";
