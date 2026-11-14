@@ -28,7 +28,7 @@
             };
             envFrom = [{ secretRef.name = "volunteers"; }];
             resources = {
-              limits = { memory = "512Mi"; };
+              limits = { memory = "2Gi"; };
               requests = { cpu = "100m"; memory = "64Mi"; };
             };
           };
