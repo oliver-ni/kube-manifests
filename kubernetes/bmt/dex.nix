@@ -38,9 +38,13 @@ let
     #   { id = "volunteers"; name = "Volunteers"; secretEnv = "VOLUNTEERS_CLIENT_SECRET";
     #     redirectURIs = [ "https://volunteers.berkeley.mt/auth/callback" ]; }
     staticClients = [
-      # Temporary, for trying a login by hand. Public (no secret, PKCE), and Dex
-      # only lets a public client without redirectURIs return to http://localhost.
-      { id = "login-test"; name = "Login test"; public = true; }
+      # Temporary, for trying a login by hand. Public (no secret, PKCE).
+      {
+        id = "login-test";
+        name = "Login test";
+        public = true;
+        redirectURIs = [ "https://dex-login-test--60c7dfuh.preview.devinapps.com/callback" ];
+      }
     ];
   };
 
