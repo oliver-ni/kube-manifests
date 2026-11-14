@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-  name: rauthy-ingress
+  name: dex-ingress
   namespace: bmt-auth
 spec:
   rules:
@@ -12,7 +12,7 @@ spec:
       paths:
       - backend:
           service:
-            name: rauthy
+            name: dex
             port:
               number: 80
         path: /
@@ -20,4 +20,4 @@ spec:
   tls:
   - hosts:
     - id.berkeley.mt
-    secretName: rauthy-ingress-tls
+    secretName: dex-ingress-tls

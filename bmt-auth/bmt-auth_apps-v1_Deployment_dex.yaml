@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dex
+  namespace: bmt-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dex
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        checksum/config: 3f38be0dbcc54932d0e1622ad07e37423b433f0feea57f74f5d19a73ef442ef1
+      labels:
+        app: dex
+    spec:
+      containers:
+      - command:
+        - dex
+        - serve
+        - /etc/dex/config.yaml
+        envFrom:
+        - secretRef:
+            name: dex
+        image: ghcr.io/dexidp/dex:v2.46.1
+        name: dex
+        ports:
+        - containerPort: 5556
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5556
+        volumeMounts:
+        - mountPath: /var/dex
+          name: dex-data
+        - mountPath: /etc/dex/config.yaml
+          name: dex-config
+          readOnly: true
+          subPath: config.yaml
+      - command:
+        - python
+        - /app/userinfo.py
+        env:
+        - name: DISCORD_GUILD_ID
+          value: '786701065856221205'
+        image: python:3.13-alpine
+        name: discord-userinfo
+        volumeMounts:
+        - mountPath: /app/userinfo.py
+          name: dex-config
+          readOnly: true
+          subPath: userinfo.py
+      securityContext:
+        fsGroup: 1001
+        runAsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+      volumes:
+      - configMap:
+          name: dex
+        name: dex-config
+      - name: dex-data
+        persistentVolumeClaim:
+          claimName: dex-data

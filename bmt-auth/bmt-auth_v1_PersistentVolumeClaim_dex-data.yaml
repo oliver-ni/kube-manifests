@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: rauthy-data
+  name: dex-data
   namespace: bmt-auth
 spec:
   accessModes:
