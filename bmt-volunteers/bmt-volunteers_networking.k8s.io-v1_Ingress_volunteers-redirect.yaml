@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/permanent-redirect: https://volunteers.berkeley.mt$request_uri
+  name: volunteers-redirect
+  namespace: bmt-volunteers
+spec:
+  rules:
+  - host: volunteers-new.berkeley.mt
+    http:
+      paths:
+      - backend:
+          service:
+            name: volunteers
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - volunteers-new.berkeley.mt
+    secretName: volunteers-redirect-tls

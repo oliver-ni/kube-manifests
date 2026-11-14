@@ -27,6 +27,8 @@ spec:
             secretKeyRef:
               key: username
               name: volunteers-postgres-app
+        - name: PUBLIC_URL
+          value: https://volunteers.berkeley.mt
         - name: DATABASE_URL
           value: postgres://$(DB_USER):$(DB_PASS)@volunteers-postgres-rw:5432/volunteers
         envFrom:
