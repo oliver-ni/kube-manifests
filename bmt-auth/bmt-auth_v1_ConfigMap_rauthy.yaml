@@ -4,8 +4,11 @@ data:
     [cluster]
     node_id = 1
     nodes = ["1 localhost:8100 localhost:8200"]
+    listen_addr_api = "[::]"
+    listen_addr_raft = "[::]"
 
     [server]
+    listen_address = "[::]"
     scheme = "http"
     pub_url = "id.berkeley.mt"
     proxy_mode = true

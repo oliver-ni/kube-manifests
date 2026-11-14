@@ -12,6 +12,8 @@ spec:
     type: Recreate
   template:
     metadata:
+      annotations:
+        checksum/config: 6d549eadd585671f3174d8d75bcb826799cb538682048cbf47f1da2406f0ac2e
       labels:
         app: rauthy
     spec:
