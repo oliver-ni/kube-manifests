@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: ee5ffa936ffd572bce8af62c900760a0854b7d5618666458db3082636defcf73
+        checksum/config: 3f38be0dbcc54932d0e1622ad07e37423b433f0feea57f74f5d19a73ef442ef1
       labels:
         app: dex
     spec:

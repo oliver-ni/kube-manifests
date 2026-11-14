@@ -1,7 +1,6 @@
 apiVersion: v1
 data:
-  config.yaml: '{"connectors":[{"config":{"authorizationURL":"https://discord.com/oauth2/authorize","clientID":"1108551511233011764","clientSecret":"$DISCORD_CLIENT_SECRET","redirectURI":"https://id.berkeley.mt/callback","scopes":["identify","email","guilds.members.read"],"tokenURL":"https://discord.com/api/oauth2/token","userInfoURL":"http://[::1]:8081/"},"id":"discord","name":"Discord","type":"oauth"}],"issuer":"https://id.berkeley.mt","oauth2":{"skipApprovalScreen":true},"staticClients":[{"id":"login-test","name":"Login
-    test","public":true}],"storage":{"config":{"file":"/var/dex/dex.db"},"type":"sqlite3"},"web":{"http":"[::]:5556"}}'
+  config.yaml: '{"connectors":[{"config":{"authorizationURL":"https://discord.com/oauth2/authorize","clientID":"1108551511233011764","clientSecret":"$DISCORD_CLIENT_SECRET","redirectURI":"https://id.berkeley.mt/callback","scopes":["identify","email","guilds.members.read"],"tokenURL":"https://discord.com/api/oauth2/token","userInfoURL":"http://[::1]:8081/"},"id":"discord","name":"Discord","type":"oauth"}],"issuer":"https://id.berkeley.mt","oauth2":{"skipApprovalScreen":true},"staticClients":[],"storage":{"config":{"file":"/var/dex/dex.db"},"type":"sqlite3"},"web":{"http":"[::]:5556"}}'
   userinfo.py: |
     """Userinfo endpoint for Dex's oauth connector.
 
