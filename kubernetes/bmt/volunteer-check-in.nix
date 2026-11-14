@@ -63,6 +63,27 @@
       };
       spec = {
         rules = [{
+          host = "volunteers.berkeley.mt";
+          http.paths = [{
+            path = "/";
+            pathType = "Prefix";
+            backend.service = { name = "volunteers"; port.number = 80; };
+          }];
+        }];
+        tls = [{
+          hosts = [ "volunteers.berkeley.mt" ];
+          secretName = "volunteers-ingress-tls";
+        }];
+      };
+    };
+
+    "networking.k8s.io/v1".Ingress.volunteers-redirect = {
+      metadata.annotations = {
+        "cert-manager.io/cluster-issuer" = "letsencrypt";
+        "nginx.ingress.kubernetes.io/permanent-redirect" = "https://volunteers.berkeley.mt$request_uri";
+      };
+      spec = {
+        rules = [{
           host = "volunteers-new.berkeley.mt";
           http.paths = [{
             path = "/";
@@ -72,7 +93,7 @@
         }];
         tls = [{
           hosts = [ "volunteers-new.berkeley.mt" ];
-          secretName = "volunteers-ingress-tls";
+          secretName = "volunteers-redirect-tls";
         }];
       };
     };
