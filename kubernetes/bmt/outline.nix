@@ -19,6 +19,8 @@ let
     AWS_S3_ACL.value = "private";
     # Outline >= 0.77 signs S3 requests with AWS SDK v3, which refuses to run without a region.
     AWS_REGION.value = "us-east-1";
+    # The default dropped from 100 MB to 1 MB in newer releases; keep the old limit.
+    FILE_STORAGE_UPLOAD_MAX_SIZE.value = "100000000";
 
     GOOGLE_CLIENT_ID.value = "799809453242-iesp4onlaje1hu5h97iq313h6f06mjuo.apps.googleusercontent.com";
 
