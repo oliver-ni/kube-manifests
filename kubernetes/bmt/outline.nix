@@ -72,7 +72,7 @@ in
         metadata.labels.app = "outline";
         spec = {
           containers.outline = {
-            image = "outlinewiki/outline:1.10.1";
+            image = "outlinewiki/outline:1.13.0";
             ports = [{ containerPort = 3000; }];
             # Keeps the old pod serving until the new one has finished its migrations.
             readinessProbe.httpGet = { path = "/_health"; port = 3000; };
