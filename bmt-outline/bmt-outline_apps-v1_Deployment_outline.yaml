@@ -79,7 +79,7 @@ spec:
         envFrom:
         - secretRef:
             name: outline
-        image: outlinewiki/outline:1.10.1
+        image: outlinewiki/outline:1.13.0
         name: outline
         ports:
         - containerPort: 3000
