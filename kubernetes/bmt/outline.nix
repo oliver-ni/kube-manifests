@@ -17,6 +17,8 @@ let
     AWS_S3_UPLOAD_BUCKET_NAME.valueFrom.configMapKeyRef = { name = "outline-bucket"; key = "BUCKET_NAME"; };
     AWS_S3_UPLOAD_BUCKET_URL.value = "https://rgw.hfym.co";
     AWS_S3_ACL.value = "private";
+    # Outline >= 0.77 signs S3 requests with AWS SDK v3, which refuses to run without a region.
+    AWS_REGION.value = "us-east-1";
 
     GOOGLE_CLIENT_ID.value = "799809453242-iesp4onlaje1hu5h97iq313h6f06mjuo.apps.googleusercontent.com";
 
@@ -68,8 +70,10 @@ in
         metadata.labels.app = "outline";
         spec = {
           containers.outline = {
-            image = "outlinewiki/outline:0.75.0";
+            image = "outlinewiki/outline:1.10.1";
             ports = [{ containerPort = 3000; }];
+            # Keeps the old pod serving until the new one has finished its migrations.
+            readinessProbe.httpGet = { path = "/_health"; port = 3000; };
             resources = {
               limits = { memory = "4Gi"; };
               requests = { memory = "1Gi"; cpu = "100m"; };
