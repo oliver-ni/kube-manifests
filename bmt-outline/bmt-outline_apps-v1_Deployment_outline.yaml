@@ -20,6 +20,8 @@ spec:
             secretKeyRef:
               key: AWS_ACCESS_KEY_ID
               name: outline-bucket
+        - name: AWS_REGION
+          value: us-east-1
         - name: AWS_S3_ACL
           value: private
         - name: AWS_S3_UPLOAD_BUCKET_NAME
@@ -44,6 +46,8 @@ spec:
             secretKeyRef:
               key: username
               name: postgres-app
+        - name: FILE_STORAGE_UPLOAD_MAX_SIZE
+          value: '100000000'
         - name: GOOGLE_CLIENT_ID
           value: 799809453242-iesp4onlaje1hu5h97iq313h6f06mjuo.apps.googleusercontent.com
         - name: PORT
@@ -75,10 +79,14 @@ spec:
         envFrom:
         - secretRef:
             name: outline
-        image: outlinewiki/outline:0.75.0
+        image: outlinewiki/outline:1.10.1
         name: outline
         ports:
         - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /_health
+            port: 3000
         resources:
           limits:
             memory: 4Gi
